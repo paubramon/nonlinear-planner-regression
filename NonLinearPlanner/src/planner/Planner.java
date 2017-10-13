@@ -43,7 +43,7 @@ public class Planner {
 	
 	private static void readInputFile() {
 		//Read input file
-		String filename = "C:\\Pau\\eclipse_workspace\\test.txt";
+		String filename = "files/input1.txt";
 		BufferedReader br = null;
 		try {
 			br = new BufferedReader(new FileReader(filename));
