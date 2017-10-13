@@ -1,4 +1,4 @@
-package planner;
+package elements;
 
 import java.util.ArrayList;
 

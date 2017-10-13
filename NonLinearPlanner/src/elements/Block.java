@@ -1,4 +1,4 @@
-package planner;
+package elements;
 
 public class Block {
 	public String name;

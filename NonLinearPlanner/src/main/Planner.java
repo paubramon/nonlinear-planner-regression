@@ -1,4 +1,4 @@
-package planner;
+package main;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -9,13 +9,16 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import planner.Operator.OperatorType;
+import elements.Block;
+import elements.GenericOperator;
+import elements.State;
+import elements.GenericOperator.OperatorType;
 
 public class Planner {
 	public static enum Arm{
 		R,L
 	}
-	public static ArrayList<Operator> operators = new ArrayList<Operator>();
+	public static ArrayList<GenericOperator> operators = new ArrayList<GenericOperator>();
 	public static ArrayList<State> stateLevel = new ArrayList<State>();
 	public static ArrayList<Block> blocks = new ArrayList<Block>();
 	public static State InitialState = new State();
@@ -26,21 +29,25 @@ public class Planner {
 		//Execute setup method
 		setupPlanner(); 
 		readInputFile();
+		
 	}
 	
-	/*
+	/**
 	 * This method sets up all parameters necessaries for the planner. 
 	 */
 	private static void setupPlanner() {
 		// Create operators list
-		operators.add(new Operator(OperatorType.LEAVE));
-		operators.add(new Operator(OperatorType.PICK_UP_LEFT));
-		operators.add(new Operator(OperatorType.PICK_UP_RIGHT));
-		operators.add(new Operator(OperatorType.STACK));
-		operators.add(new Operator(OperatorType.UNSTACK_LEFT));
-		operators.add(new Operator(OperatorType.UNSTACK_RIGHT));
+		operators.add(new GenericOperator(OperatorType.LEAVE));
+		operators.add(new GenericOperator(OperatorType.PICK_UP_LEFT));
+		operators.add(new GenericOperator(OperatorType.PICK_UP_RIGHT));
+		operators.add(new GenericOperator(OperatorType.STACK));
+		operators.add(new GenericOperator(OperatorType.UNSTACK_LEFT));
+		operators.add(new GenericOperator(OperatorType.UNSTACK_RIGHT));
 	}
 	
+	/**
+	 * This method reads the input file and store all the information in different objects.  
+	 */
 	private static void readInputFile() {
 		//Read input file
 		String filename = "files/input1.txt";

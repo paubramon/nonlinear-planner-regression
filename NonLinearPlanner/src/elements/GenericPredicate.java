@@ -1,8 +1,14 @@
-package planner;
+package elements;
 
-import planner.Planner.Arm;
+import main.Planner.Arm;
 
-public class Predicate {
+/**
+ * This class will create generic predicates objects. These can be used together with the GenericOperators
+ * class in order to define our system.
+ * @author paubr
+ *
+ */
+public class GenericPredicate {
 	public static enum PredicateType{
 		ON_TABLE, ON, CLEAR, EMPTY_ARM, HOLDING, USED_COLS_NUM, HEAVIER, LIGHT_BLOCK
 	}
@@ -14,7 +20,7 @@ public class Predicate {
 	/*
 	 * Predicate Constructor
 	 */
-	public Predicate(PredicateType type){
+	public GenericPredicate(PredicateType type){
 		this.type = type;
 		switch (type) {
 			case ON_TABLE:
