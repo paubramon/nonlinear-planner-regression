@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 import elements.Block;
 import elements.GenericOperator;
 import elements.State;
+import planner.NonLinearPlannerRegression;
 import elements.GenericOperator.OperatorType;
 
 public class Planner {
@@ -21,15 +22,15 @@ public class Planner {
 	public static ArrayList<GenericOperator> operators = new ArrayList<GenericOperator>();
 	public static ArrayList<State> stateLevel = new ArrayList<State>();
 	public static ArrayList<Block> blocks = new ArrayList<Block>();
-	public static State InitialState = new State();
-	public static State FinalState = new State();
-	public static int MaxColumns;
+	public static State initialState;
+	public static State finalState;
 	
 	public static void main(String[] args) {
 		//Execute setup method
 		setupPlanner(); 
 		readInputFile();
-		
+		NonLinearPlannerRegression planner = new NonLinearPlannerRegression(operators, initialState, finalState, blocks);
+		planner.runPlanner();
 	}
 	
 	/**
@@ -59,7 +60,7 @@ public class Planner {
 			String line = br.readLine();
 			Matcher matcher = Pattern.compile("MaxColumns=(\\d*)").matcher(line);
 			if(matcher.matches()) {
-				MaxColumns = Integer.parseInt(matcher.group(1));
+				State.MaxColumns = Integer.parseInt(matcher.group(1));
 			}
 			
 			//Get Blocks
@@ -80,16 +81,34 @@ public class Planner {
 			line = br.readLine();
 			matcher = Pattern.compile("InitialState=(.*);").matcher(line);
 			if(matcher.matches()) {
-				List<String> initialStateList = Arrays.asList(matcher.group(1).split(","));
-				InitialState.setPredicates(new ArrayList<String>(initialStateList));
+				ArrayList<String> initialStateList = new ArrayList<String>();
+				List<String> tempList = Arrays.asList(matcher.group(1).split("\\),"));
+				for(String predicate : tempList) {
+					//removes spaces before and after the strings and adds a ")" at the end
+					predicate = predicate.trim();
+					if (!predicate.endsWith(")")) predicate = predicate + ")";
+					initialStateList.add(predicate); 
+				}
+				initialState = new State(initialStateList);
+				System.out.println("Initial State");
+				initialState.printState();
 			}
 			
 			//Get GoalState
 			line = br.readLine();
 			matcher = Pattern.compile("GoalState=(.*);").matcher(line);
 			if(matcher.matches()) {
-				List<String> finalStateList = Arrays.asList(matcher.group(1).split(","));
-				FinalState.setPredicates(new ArrayList<String>(finalStateList));
+				ArrayList<String> finalStateList = new ArrayList<String>();
+				List<String> tempList = Arrays.asList(matcher.group(1).split("\\),"));
+				for(String predicate : tempList) {
+					//removes spaces before and after the strings and adds a ")" at the end
+					predicate = predicate.trim();
+					if (!predicate.endsWith(")")) predicate = predicate + ")";
+					finalStateList.add(predicate); 
+				}
+				finalState = new State(new ArrayList<String>(finalStateList));
+				System.out.println("Final State");
+				finalState.printState();
 			}
 			
 		}catch (IOException e) {

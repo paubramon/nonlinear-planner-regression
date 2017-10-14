@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import elements.Block;
 import elements.GenericOperator;
+import elements.Operator;
 import elements.State;
 
 public class NonLinearPlannerRegression {
@@ -15,8 +16,8 @@ public class NonLinearPlannerRegression {
 	private ArrayList<State> stateLevel = new ArrayList<State>();
 	private ArrayList<State> visitedStates = new ArrayList<State>();
 	
-	public NonLinearPlannerRegression(ArrayList<GenericOperator> operators, State initialState, State finalState,
-			ArrayList<String> environmentConditions, ArrayList<Block> blocks) {
+	public NonLinearPlannerRegression(ArrayList<GenericOperator> operators, State initialState, 
+			State finalState, ArrayList<Block> blocks) {
 		this.operators = operators;
 		this.initialState = initialState;
 		this.finalState = finalState; 
@@ -35,13 +36,16 @@ public class NonLinearPlannerRegression {
 	/**
 	 * This method finds all possible child states for a given goal state.
 	 */
-	public void findChilds(State goalState) {
+	private void findChilds(State goalState) {
 		ArrayList<String> finalConditions = finalState.getPredicates();
-		ArrayList<String> possibleOperators = new ArrayList<String>();
+		ArrayList<Operator> possibleOperators = new ArrayList<Operator>();
 		for(String condition : finalConditions) {
 			for(GenericOperator operator : operators) {
-				//possibleOperators.addAll(operator.findCombinations(blocks, condition));	
+				possibleOperators.addAll(operator.findCombinations(blocks, condition));	
 			}
+		}
+		for(Operator operator : possibleOperators) {
+			System.out.println(operator.printOperator());
 		}
 	}
 	
