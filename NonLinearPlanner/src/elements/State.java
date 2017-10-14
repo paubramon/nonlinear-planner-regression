@@ -131,7 +131,7 @@ public class State {
 		return true;
 	}
 	
-	/*
+	/**
 	 * Method used internally to calculate the available space on the table in the current state
 	 */
 	private int calculateAvailableSpace() {
@@ -142,6 +142,10 @@ public class State {
 		return available_space;
 	}
 	
+	/**
+	 * Checks if the given predicate is one of the special ones that should not be added. e.g USED_COLS_NUM(n+1)
+	 * @param predicate
+	 */
 	private boolean isSpecialPredicate(String predicate) {
 		if((GenericPredicate.findType(predicate) == PredicateType.USED_COLS_NUM_INC) 
 				|| (GenericPredicate.findType(predicate) == PredicateType.USED_COLS_NUM_DEC)
