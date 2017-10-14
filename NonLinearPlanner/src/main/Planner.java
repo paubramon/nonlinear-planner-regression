@@ -29,6 +29,7 @@ public class Planner {
 		//Execute setup method
 		setupPlanner(); 
 		readInputFile();
+		findEnvironmentConditions();
 		NonLinearPlannerRegression planner = new NonLinearPlannerRegression(operators, initialState, finalState, blocks);
 		planner.runPlanner();
 	}
@@ -122,6 +123,32 @@ public class Planner {
                 ex.printStackTrace();
             }
         }		
+		
+	}
+	
+	/**
+	 * Looking at the different blocks and with the knowledge we have of the environment, 
+	 * we can add some predicates that will define our environment. This will provide the knowledge of the environment.
+	 */
+	public static void findEnvironmentConditions() {
+		
+		ArrayList<String> environmentPredicates = new ArrayList<String>();
+		
+		/*
+		 * With the knowledge of the different block we can specify the weight relations. 
+		 * With this loop we will add predicates like HEAVIER(A,B) or LIGHT-BLOCK(B)
+		 */
+		for(Block block1 : blocks) {
+			if(block1.weight == 1) environmentPredicates.add("LIGHT-BLOCK(" + block1.name + ")");
+			for(Block block2 : blocks) {
+				if(block1 != block2) {
+					if(block1.weight >= block2.weight) environmentPredicates.add("HEAVIER(" + block1.name + ")");
+				}
+			}
+		}
+		
+		State.environmentConditions.addAll(environmentPredicates);
+		
 		
 	}
 }

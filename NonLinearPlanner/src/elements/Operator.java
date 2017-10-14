@@ -137,6 +137,18 @@ public class Operator {
 		}
 	}
 	
+	/**
+	 * This method checks if the condition is in the delete list.
+	 * @param condition
+	 */
+	public boolean isInDelList(String condition) {
+		if(deletedConditions.contains(condition)) {
+			return true;
+		}else {
+			return false;	
+		}
+	}
+	
 	@Override
 	public boolean equals(Object other) {
 		if (!(other instanceof Operator)) {

@@ -141,13 +141,15 @@ public class GenericPredicate {
 			case "HEAVIER":
 				return PredicateType.HEAVIER;
 			case "LIGHT-BLOCK":
-				//This is a general predicate and this method is not designed for general predicates. 
-				//It will return the default type for this predicate which is LIGHT_BLOCK
 				return PredicateType.LIGHT_BLOCK;
 			case "USED-COLS-NUM":
-				//This is a general predicate and this method is not designed for general predicates. 
-				//It will return the default type for this predicate which is USED_COLS_NUM_OK
-				return PredicateType.USED_COLS_NUM_OK;	
+				if(predicate == "USED-COLS-NUM(n) n>0") {
+					return PredicateType.USED_COLS_NUM_OK;
+				}else if(predicate == "USED-COLS-NUM(n+1)") {
+					return PredicateType.USED_COLS_NUM_INC;
+				}else if(predicate == "USED-COLS-NUM(n-1)") {
+					return PredicateType.USED_COLS_NUM_DEC;
+				}
 			}
 		}
 		return null;
