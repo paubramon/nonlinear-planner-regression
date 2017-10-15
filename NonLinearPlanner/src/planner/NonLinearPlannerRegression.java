@@ -27,25 +27,48 @@ public class NonLinearPlannerRegression {
 	}
 	
 	public ArrayList<String> runPlanner(){
+		ArrayList<State> stateQueue = new ArrayList<State>();
+		ArrayList<State> visitedStates = new ArrayList<State>();
+		stateQueue.add(finalState);
 		
-		findChilds(finalState);
-		
-		return null;
+		State tempState = new State();
+		boolean solved = false;
+		while(!solved && !stateQueue.isEmpty()) {
+			System.out.println("Analizing...");
+			tempState = stateQueue.get(0);
+			if(tempState.equals(initialState)) {
+				solved = true;
+				break;
+			}else if(!visitedStates.contains(tempState)) {
+				stateQueue.addAll(findChilds(tempState));
+				visitedStates.add(tempState);
+			}
+			stateQueue.remove(0);
+		}
+		if(solved && !tempState.getUsedOperators().isEmpty()) {
+			System.out.println("Solved!! The plan is:");
+			System.out.println(String.join(",", tempState.getUsedOperators()));
+		}else {
+			System.out.println("Unable to find a plan...");
+		}
+		return tempState.getUsedOperators();
 	}
 	
 	/**
 	 * This method finds all possible child states for a given goal state.
 	 */
-	private void findChilds(State goalState) {
+	private ArrayList<State> findChilds(State goalState) {
 		ArrayList<State> childs = new ArrayList<State>();
-		ArrayList<String> finalConditions = finalState.getPredicates();
+		ArrayList<String> finalConditions = goalState.getPredicates();
 		ArrayList<Operator> possibleOperators = new ArrayList<Operator>();
 		ArrayList<Operator> validOperators = new ArrayList<Operator>();
 		
 		//This loop searches all the possible operators that could add one of the conditions in the final state.
 		for(String condition : finalConditions) {
 			for(GenericOperator operator : operators) {
-				possibleOperators.addAll(operator.findCombinations(blocks, condition));	
+				for(Operator opp : operator.findCombinations(blocks, condition)) {
+					if(!possibleOperators.contains(opp)) possibleOperators.add(opp);	
+				}	
 			}
 		}
 		
@@ -53,9 +76,8 @@ public class NonLinearPlannerRegression {
 		State possibleState;
 		int resultRegression = 0;
 		boolean stateValid = true;
-		System.out.println("\n\n-------------------------------------------------");
+		//System.out.println("\n\n-------------------------------------------------");
 		for(Operator pOperator : possibleOperators) {
-			String prova = pOperator.printOperator();
 			stateValid = true;
 			possibleState = new State();
 			possibleState.setUsedOperators(goalState.getUsedOperators());
@@ -81,12 +103,12 @@ public class NonLinearPlannerRegression {
 					childs.add(possibleState);
 					validOperators.add(pOperator);
 				}else {
-					System.out.print(pOperator.printOperator() + "  ->  ");
-					System.out.println(possibleState.stateExplanation);
+					//System.out.print(pOperator.printOperator() + "  ->  ");
+					//System.out.println(possibleState.stateExplanation);
 				}
 			}
 		}
-		System.out.println("\n------------------------------------------");
+		/*System.out.println("\n------------------------------------------");
 		System.out.println("Possible operators:");
 		
 		for(Operator operator : possibleOperators) {
@@ -97,7 +119,9 @@ public class NonLinearPlannerRegression {
 		
 		for(Operator operator : validOperators) {
 			System.out.println(operator.printOperator());
-		}
+		}*/
+		
+		return childs;
 	}
 	
 	/**

@@ -50,7 +50,7 @@ public class State {
 	 * Getters and Setters
 	 */
 	public ArrayList<String> getPredicates() {
-		return predicates;
+		return (ArrayList<String>) predicates.clone();
 	}
 	
 	public void setPredicates(ArrayList<String> predicates) {
@@ -58,7 +58,7 @@ public class State {
 	}
 
 	public ArrayList<String> getUsedOperators() {
-		return usedOperators;
+		return (ArrayList<String>) usedOperators.clone();
 	}
 	
 	public void setUsedOperators(ArrayList<String> usedOperators) {
@@ -244,10 +244,29 @@ public class State {
 		if((Predicate.findType(predicate) == PredicateType.USED_COLS_NUM_INC) 
 				|| (Predicate.findType(predicate) == PredicateType.USED_COLS_NUM_DEC)
 				|| (Predicate.findType(predicate) == PredicateType.USED_COLS_NUM_OK)
+				|| (Predicate.findType(predicate) == PredicateType.HEAVIER)
+				|| (Predicate.findType(predicate) == PredicateType.LIGHT_BLOCK)
 				|| (Predicate.findType(predicate) == null)) {
 			return true;
 		}else {
 			return false;
 		}
+	}
+	
+	@Override
+	public boolean equals(Object other) {
+		if (!(other instanceof State)) {
+	        return false;
+	    }
+		
+		State state = (State) other;
+		
+		ArrayList<String> predicates1 = (ArrayList<String>) this.predicates.clone();
+		ArrayList<String> predicates2 = (ArrayList<String>) state.predicates.clone();
+		predicates1.sort(null);
+		predicates2.sort(null);
+		
+		//Custom equality check
+		return predicates1.equals(predicates2);
 	}
 }
