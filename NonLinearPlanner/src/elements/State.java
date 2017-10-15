@@ -1,8 +1,10 @@
 package elements;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import elements.GenericPredicate.PredicateType;
+import elements.Predicate.PredicateType;
 
 /**
  * This class defines our states.
@@ -15,6 +17,7 @@ public class State {
 	private ArrayList<String> predicates = new ArrayList<String>();
 	private ArrayList<String> usedOperators = new ArrayList<String>();
 	private int availableSpace;
+	public String stateExplanation = "Correct State"; //This will show if the state is correct or the reason why it's not
 	
 	/**
 	 * First possible constructor, where we specify the used operators.
@@ -22,7 +25,7 @@ public class State {
 	 * @param usedOperators : total amount of operators used so far to get to this state
 	 */
 	public State(ArrayList<String> predicates, ArrayList<String> usedOperators) {
-		this.predicates = predicates;
+		addAllPredicate(predicates);
 		this.usedOperators = usedOperators;
 		this.availableSpace = calculateAvailableSpace();
 	}
@@ -32,7 +35,7 @@ public class State {
 	 * @param predicates : predicates of this state
 	 */
 	public State(ArrayList<String> predicates) {
-		this.predicates = predicates;
+		addAllPredicate(predicates);
 		this.availableSpace =  calculateAvailableSpace();
 	}
 	
@@ -76,7 +79,7 @@ public class State {
 	 */
 	public void addPredicate(String predicate){
 		//Before adding the predicate, we check if it is one of the special ones (USED_COLS_NUM or HOLDING)
-		if(!isSpecialPredicate(predicate)) {
+		if(!isSpecialPredicate(predicate) && !predicates.contains(predicate)) {
 			predicates.add(predicate);
 			//After adding predicates we have to recalculate the available space
 			this.availableSpace = calculateAvailableSpace();
@@ -89,8 +92,8 @@ public class State {
 	 */
 	public void addAllPredicate(ArrayList<String> predicates){
 		for(String predicate : predicates){
-			if(!isSpecialPredicate(predicate)) {
-				predicates.add(predicate);
+			if(!isSpecialPredicate(predicate) && !this.predicates.contains(predicate)) {
+				this.predicates.add(predicate);
 			}
 		}
 		//After adding predicates we have to recalculate the available space
@@ -128,7 +131,98 @@ public class State {
 	 */
 	public boolean isStateValid() {
 		
+		//Checks if we have too many elements on the table
+		if(availableSpace<0) {
+			stateExplanation = "Too many elements on the table.";
+			return false;
+		}
+		
+		//Checks if there are contradictory predicates
+		boolean ContradictoryPredicate = false;
+		for(String predicate : predicates) {
+			ContradictoryPredicate = isPredicateContradictory(predicate);
+			if(ContradictoryPredicate){
+				return false;
+			}
+		}
+		
 		return true;
+	}
+	
+	/**
+	 * This method checks if a given predicate contradicts with one of the predicates that define the state
+	 * or one of the environment predicates. 
+	 * @param predicate
+	 * @return
+	 */
+	private boolean isPredicateContradictory(String predicate) {
+		String predicatesList = String.join(";", predicates) + ";" + String.join(";", environmentConditions) + ";";
+		Matcher matcher;
+		String blockname1;
+		String blockname2;
+		String armname;
+		PredicateType prova = Predicate.findType(predicate);
+		switch(Predicate.findType(predicate)) {
+		case CLEAR:
+			blockname1 = predicate.substring(6, 7);
+			if(Pattern.matches(".*ON\\(.," + blockname1 + "\\);.*", predicatesList)) {
+				stateExplanation = "Contradictory states: CLEAR("+ blockname1 + ") is incompatible with ON(y," + blockname1 + ")";
+				return true;
+			}
+			break;
+		case EMPTY_ARM:
+			armname = predicate.substring(10, 11);
+			if(Pattern.matches(".*HOLDING\\(.," + armname + "\\);.*", predicatesList)) {
+				stateExplanation = "Contradictory states: EMPTY-ARM("+ armname +") is incompatible with HOLDING(x," + armname + ")";
+				return true;
+			}
+			break;
+		case HOLDING:
+			blockname1 = predicate.substring(8, 9);
+			armname = predicate.substring(10, 11);
+			if(Pattern.matches(".*HOLDING\\([^" + blockname1 + "]," + armname + "\\);.*", predicatesList)) {
+				stateExplanation = "Contradictory states: HOLDING(" + blockname1 + "," + armname + ") is incompatible with HOLDING(y," + armname + ")";
+				return true;
+			}else if(Pattern.matches(".*HOLDING\\(" + blockname1 + ",[^" + armname + "]\\);.*", predicatesList)) {
+				stateExplanation = "Contradictory states: HOLDING(" + blockname1 + "," + armname + ") is incompatible with HOLDING(" + blockname1 + ", with the other arm)";
+				return true;
+			}else if(armname.equals("L") && (!Pattern.matches(".*LIGHT-BLOCK\\(" + blockname1 + "\\);.*", predicatesList))) {
+				stateExplanation = "Contradictory states: HOLDING(" + blockname1 + ",L) is only possible if there is the predicate LIGHT-BLOCK(" + blockname1 + ")";
+				return true;
+			}
+			break;
+		case ON:
+			blockname1 = predicate.substring(3, 4);
+			blockname2 = predicate.substring(5, 6);
+			if(Pattern.matches(".*HOLDING\\(" + blockname1 + ",.*", predicatesList)) {
+				stateExplanation = "Contradictory states: ON(" + blockname1 + ",y) is incompatible with HOLDING(" + blockname1 + ",Arm)";
+				return true;
+			}else if(Pattern.matches(".*ON-TABLE\\(" + blockname1 + "\\);.*", predicatesList)) {
+				stateExplanation = "Contradictory states: ON(" + blockname1 + ",y) is incompatible with ON-TABLE(" + blockname1 + ")";
+				return true;
+			}else if(!Pattern.matches(".*HEAVIER\\(" + blockname2 + "," + blockname1 + "\\);.*", predicatesList)) {
+				stateExplanation = "Contradictory states: if ON(" + blockname1 + "," + blockname2 + ") there must be the predicate HEAVIER(" + blockname2 + "," + blockname1 + ")";
+				return true;
+			}else if(Pattern.matches(".*ON\\(" + blockname2 + "," + blockname1 + "\\);.*", predicatesList)) {
+				stateExplanation = "Contradictory states: ON(" + blockname1 + "," + blockname2 + ") is incompatible with ON(" + blockname2 + "," + blockname1 + ")";
+				return true;
+			}else if(!Pattern.matches(".*ON-TABLE\\(" + blockname2 + "\\);.*", predicatesList) && !Pattern.matches(".*ON\\(" + blockname2 + ",.\\);.*", predicatesList)) {
+				stateExplanation = "Contradictory states: if ON(" + blockname1 + "," + blockname2 + ") there must be the predicate ON-TABLE(" + blockname2 + ") or ON(" + blockname2 + ",z)";
+				return true;
+			}
+			break;
+		case ON_TABLE:
+			blockname1 = predicate.substring(9, 10);
+			if(Pattern.matches(".*HOLDING\\(" + blockname1 + ",.*", predicatesList)) {
+				stateExplanation = "Contradictory states: ON-TABLE(" + blockname1 + ") is incompatible with HOLDING(" + blockname1 + ",Arm)";
+				return true;
+			}else if(Pattern.matches(".*ON\\(" + blockname1 + ",.\\);.*", predicatesList)) {
+				stateExplanation = "Contradictory states: ON-TABLE(" + blockname1 + ") is incompatible with ON(" + blockname1 + ",y)";
+				return true;
+			}
+			break;
+		}		
+		return false;
 	}
 	
 	/**
@@ -137,7 +231,7 @@ public class State {
 	private int calculateAvailableSpace() {
 		int available_space = MaxColumns;
 		for(String predicate : predicates) {
-			if(GenericPredicate.findType(predicate) == PredicateType.ON_TABLE) available_space -= 1;
+			if(Predicate.findType(predicate) == PredicateType.ON_TABLE) available_space -= 1;
 		}
 		return available_space;
 	}
@@ -147,9 +241,10 @@ public class State {
 	 * @param predicate
 	 */
 	private boolean isSpecialPredicate(String predicate) {
-		if((GenericPredicate.findType(predicate) == PredicateType.USED_COLS_NUM_INC) 
-				|| (GenericPredicate.findType(predicate) == PredicateType.USED_COLS_NUM_DEC)
-				|| (GenericPredicate.findType(predicate) == PredicateType.USED_COLS_NUM_OK)) {
+		if((Predicate.findType(predicate) == PredicateType.USED_COLS_NUM_INC) 
+				|| (Predicate.findType(predicate) == PredicateType.USED_COLS_NUM_DEC)
+				|| (Predicate.findType(predicate) == PredicateType.USED_COLS_NUM_OK)
+				|| (Predicate.findType(predicate) == null)) {
 			return true;
 		}else {
 			return false;

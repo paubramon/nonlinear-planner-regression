@@ -32,6 +32,7 @@ public class Planner {
 		findEnvironmentConditions();
 		NonLinearPlannerRegression planner = new NonLinearPlannerRegression(operators, initialState, finalState, blocks);
 		planner.runPlanner();
+		
 	}
 	
 	/**
@@ -45,6 +46,15 @@ public class Planner {
 		operators.add(new GenericOperator(OperatorType.STACK));
 		operators.add(new GenericOperator(OperatorType.UNSTACK_LEFT));
 		operators.add(new GenericOperator(OperatorType.UNSTACK_RIGHT));
+		
+		
+		//This is used to check if the operators are correctly defined.
+		/*Block a = new Block("A",2);
+		Block b = new Block("B",2);
+		for(GenericOperator op : operators) {
+			op.getOperator(a, b).printAll();
+		}*/
+		
 	}
 	
 	/**
@@ -142,7 +152,7 @@ public class Planner {
 			if(block1.weight == 1) environmentPredicates.add("LIGHT-BLOCK(" + block1.name + ")");
 			for(Block block2 : blocks) {
 				if(block1 != block2) {
-					if(block1.weight >= block2.weight) environmentPredicates.add("HEAVIER(" + block1.name + ")");
+					if(block1.weight >= block2.weight) environmentPredicates.add("HEAVIER(" + block1.name + "," + block2.name + ")");
 				}
 			}
 		}

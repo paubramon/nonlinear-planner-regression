@@ -3,7 +3,7 @@ package elements;
 import java.util.ArrayList;
 
 import elements.GenericOperator.OperatorType;
-import elements.GenericPredicate.PredicateType;
+import elements.Predicate.PredicateType;
 import main.Planner.Arm;
 
 /**
@@ -19,9 +19,9 @@ public class GenericOperator {
 		PICK_UP_RIGHT, PICK_UP_LEFT, UNSTACK_RIGHT, UNSTACK_LEFT, STACK, LEAVE
 	}
 	
-	private ArrayList<GenericPredicate> preConditions = new ArrayList<GenericPredicate>();
-	private ArrayList<GenericPredicate> addedConditions = new ArrayList<GenericPredicate>();
-	private ArrayList<GenericPredicate> deletedConditions = new ArrayList<GenericPredicate>();
+	private ArrayList<String> preConditions = new ArrayList<String>();
+	private ArrayList<String> addedConditions = new ArrayList<String>();
+	private ArrayList<String> deletedConditions = new ArrayList<String>();
 	private Arm arm = Arm.R;
 	private OperatorType type; 
 	private int numOfBlocks = 0; //This is the number of blocks involved in this operation
@@ -36,102 +36,73 @@ public class GenericOperator {
 		case PICK_UP_RIGHT:
 			arm = Arm.R;
 			numOfBlocks = 1;
-			preConditions.add(new GenericPredicate(PredicateType.ON_TABLE));
-			preConditions.add(new GenericPredicate(PredicateType.CLEAR));
-			preConditions.add(new GenericPredicate(PredicateType.EMPTY_ARM));
-			deletedConditions.add(new GenericPredicate(PredicateType.ON_TABLE));
-			deletedConditions.add(new GenericPredicate(PredicateType.EMPTY_ARM));
-			addedConditions.add(new GenericPredicate(PredicateType.HOLDING));
-			addedConditions.add(new GenericPredicate(PredicateType.USED_COLS_NUM_INC));
+			preConditions.add("ON-TABLE(?x)");
+			preConditions.add("CLEAR(?x)");
+			preConditions.add("EMPTY-ARM(R)");
+			deletedConditions.add("ON-TABLE(?x)");
+			deletedConditions.add("EMPTY-ARM(R)");
+			addedConditions.add("HOLDING(?x,R)");
+			addedConditions.add("USED-COLS-NUM(n+1)");
 			break;
 			
 		case PICK_UP_LEFT:
 			arm = Arm.L;
 			numOfBlocks = 1;
-			preConditions.add(new GenericPredicate(PredicateType.ON_TABLE));
-			preConditions.add(new GenericPredicate(PredicateType.CLEAR));
-			preConditions.add(new GenericPredicate(PredicateType.EMPTY_ARM));
-			preConditions.add(new GenericPredicate(PredicateType.LIGHT_BLOCK));
-			deletedConditions.add(new GenericPredicate(PredicateType.ON_TABLE));
-			deletedConditions.add(new GenericPredicate(PredicateType.EMPTY_ARM));
-			addedConditions.add(new GenericPredicate(PredicateType.HOLDING));
-			addedConditions.add(new GenericPredicate(PredicateType.USED_COLS_NUM_INC));
+			preConditions.add("ON-TABLE(?x)");
+			preConditions.add("CLEAR(?x)");
+			preConditions.add("EMPTY-ARM(L)");
+			preConditions.add("LIGHT-BLOCK(?x)");
+			deletedConditions.add("ON-TABLE(?x)");
+			deletedConditions.add("EMPTY-ARM(L)");
+			addedConditions.add("HOLDING(?x,L)");
+			addedConditions.add("USED-COLS-NUM(n+1)");
 			break;
 			
 		case UNSTACK_RIGHT:
 			arm = Arm.R;
 			numOfBlocks = 2;
-			preConditions.add(new GenericPredicate(PredicateType.ON));
-			preConditions.add(new GenericPredicate(PredicateType.CLEAR));
-			preConditions.add(new GenericPredicate(PredicateType.EMPTY_ARM));
-			deletedConditions.add(new GenericPredicate(PredicateType.ON));
-			deletedConditions.add(new GenericPredicate(PredicateType.EMPTY_ARM));
-			addedConditions.add(new GenericPredicate(PredicateType.HOLDING));
-			addedConditions.add(new GenericPredicate(PredicateType.CLEAR));
+			preConditions.add("ON(?x,?y)");
+			preConditions.add("CLEAR(?x)");
+			preConditions.add("EMPTY-ARM(R)");
+			deletedConditions.add("ON(?x,?y)");
+			deletedConditions.add("EMPTY-ARM(R)");
+			addedConditions.add("HOLDING(?x,R)");
+			addedConditions.add("CLEAR(?y)");
 			break;
 			
 		case UNSTACK_LEFT:
 			arm = Arm.L;
 			numOfBlocks = 2;
-			preConditions.add(new GenericPredicate(PredicateType.ON));
-			preConditions.add(new GenericPredicate(PredicateType.CLEAR));
-			preConditions.add(new GenericPredicate(PredicateType.EMPTY_ARM));
-			preConditions.add(new GenericPredicate(PredicateType.LIGHT_BLOCK));
-			deletedConditions.add(new GenericPredicate(PredicateType.ON));
-			deletedConditions.add(new GenericPredicate(PredicateType.EMPTY_ARM));
-			addedConditions.add(new GenericPredicate(PredicateType.HOLDING));
-			addedConditions.add(new GenericPredicate(PredicateType.CLEAR));
+			preConditions.add("ON(?x,?y)");
+			preConditions.add("CLEAR(?x)");
+			preConditions.add("EMPTY-ARM(R)");
+			preConditions.add("LIGHT-BLOCK(?x)");
+			deletedConditions.add("ON(?x,?y)");
+			deletedConditions.add("EMPTY-ARM(R)");
+			addedConditions.add("HOLDING(?x,R)");
+			addedConditions.add("CLEAR(?y)");
 			break;
 			
 		case STACK:
 			numOfBlocks = 2;
-			preConditions.add(new GenericPredicate(PredicateType.HOLDING));
-			preConditions.add(new GenericPredicate(PredicateType.CLEAR));
-			preConditions.add(new GenericPredicate(PredicateType.HEAVIER));
-			deletedConditions.add(new GenericPredicate(PredicateType.CLEAR));
-			deletedConditions.add(new GenericPredicate(PredicateType.HOLDING));
-			addedConditions.add(new GenericPredicate(PredicateType.ON));
-			addedConditions.add(new GenericPredicate(PredicateType.EMPTY_ARM));
+			preConditions.add("HOLDING(?x,?a)");
+			preConditions.add("CLEAR(?y)");
+			preConditions.add("HEAVIER(?x,?y)");
+			deletedConditions.add("CLEAR(?y)");
+			deletedConditions.add("HOLDING(?x,?a)");
+			addedConditions.add("ON(?x,?y)");
+			addedConditions.add("EMPTY-ARM(?a)");
 			break; 
 			
 		case LEAVE:
 			numOfBlocks = 1;
-			preConditions.add(new GenericPredicate(PredicateType.HOLDING));
-			preConditions.add(new GenericPredicate(PredicateType.USED_COLS_NUM_OK));
-			deletedConditions.add(new GenericPredicate(PredicateType.HOLDING));
-			addedConditions.add(new GenericPredicate(PredicateType.ON_TABLE));
-			addedConditions.add(new GenericPredicate(PredicateType.EMPTY_ARM));
-			addedConditions.add(new GenericPredicate(PredicateType.USED_COLS_NUM_DEC));
+			preConditions.add("HOLDING(?x,?a)");
+			preConditions.add("USED-COLS-NUM(n) n>0");
+			deletedConditions.add("HOLDING(?x,?a)");
+			addedConditions.add("ON-TABLE(?x)");
+			addedConditions.add("EMPTY-ARM(?a)");
+			addedConditions.add("USED-COLS-NUM(n-1)");
 			break;
-		}
-	}
-	
-	/**
-	 * This method prints out the Preconditions, the Add list and Delete list for the method given the following parameters:
-	 * @param block1 : first block of the operator  
-	 * @param block2 : second block of the operator (null if it does not exist)
-	 * @param arm : arm of the robot that does the operation. 
-	 * @param availableSpace : number of space available
-	 */
-	public void printOperator(Block block1, Block block2) {
-		System.out.print(String.format("\n\n%s", type.toString()));
-		System.out.print("\n-------------------------------------");
-		System.out.print("\nPRECONDITIONS:\n");
-		System.out.print("-------------------------------------\n");
-		for(GenericPredicate prec:preConditions){
-			System.out.println(prec.generatePredicate(block1, block2, arm));
-		}
-		System.out.print("\n-------------------------------------");
-		System.out.print("\nADD List:\n");
-		System.out.print("-------------------------------------\n");
-		for(GenericPredicate acond:addedConditions){
-			System.out.println(acond.generatePredicate(block1, block2, arm));
-		}
-		System.out.print("\n-------------------------------------");
-		System.out.print("\nDELETE List:\n");
-		System.out.print("-------------------------------------\n");
-		for(GenericPredicate dcond:deletedConditions){
-			System.out.println(dcond.generatePredicate(block1, block2, arm));
 		}
 	}
 	
@@ -145,14 +116,24 @@ public class GenericOperator {
 		ArrayList<String> foundPreConditions = new ArrayList<String>();
 		ArrayList<String> foundAddedConditions = new ArrayList<String>();
 		ArrayList<String> foundDeletedConditions = new ArrayList<String>();
-		for(GenericPredicate predicate : preConditions) {
-			foundPreConditions.add(predicate.generatePredicate(block1, block2, arm));
+		
+		for(String predicate : preConditions) {
+			predicate = predicate.replace("?x", block1.name);
+			predicate = predicate.replace("?y", block2.name);
+			predicate = predicate.replace("?a", arm.toString());
+			foundPreConditions.add(predicate);
 		}
-		for(GenericPredicate predicate : addedConditions) {
-			foundAddedConditions.add(predicate.generatePredicate(block1, block2, arm));
+		for(String predicate : addedConditions) {
+			predicate = predicate.replace("?x", block1.name);
+			predicate = predicate.replace("?y", block2.name);
+			predicate = predicate.replace("?a", arm.toString());
+			foundAddedConditions.add(predicate);
 		}
-		for(GenericPredicate predicate : deletedConditions) {
-			foundDeletedConditions.add(predicate.generatePredicate(block1, block2, arm));
+		for(String predicate : deletedConditions) {
+			predicate = predicate.replace("?x", block1.name);
+			predicate = predicate.replace("?y", block2.name);
+			predicate = predicate.replace("?a", arm.toString());
+			foundDeletedConditions.add(predicate);
 		}
 		if(numOfBlocks == 1) {
 			return new Operator(type, numOfBlocks, foundPreConditions, foundAddedConditions,foundDeletedConditions, arm, block1, null);
@@ -168,15 +149,14 @@ public class GenericOperator {
 	 */
 	public ArrayList<Operator> findCombinations(ArrayList<Block> blocks, String condition){
 		ArrayList<Operator> possibleOperators = new ArrayList<Operator>();
-		PredicateType searchedType = GenericPredicate.findType(condition);
+		PredicateType searchedType = Predicate.findType(condition);
 		
 		/*
-		 * First, we look into the addConditions list to see if any of the conditions that this method
-		 * adds, is one of the same type as the one we are looking for
+		 * First, we check if the condition is in the add list of this operator
 		 */
 		boolean existAdd = false;
-		for(GenericPredicate addCondition : addedConditions) {
-			if(addCondition.type == searchedType) existAdd = true;
+		for(String addCondition : addedConditions) {
+			if(Predicate.findType(addCondition) == searchedType) existAdd = true;
 		}
 		
 		//If this method add a condition of the same type as input:condition

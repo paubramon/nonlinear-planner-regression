@@ -3,7 +3,7 @@ package elements;
 import java.util.ArrayList;
 
 import elements.GenericOperator.OperatorType;
-import elements.GenericPredicate.PredicateType;
+import elements.Predicate.PredicateType;
 import main.Planner.Arm;
 
 public class Operator {

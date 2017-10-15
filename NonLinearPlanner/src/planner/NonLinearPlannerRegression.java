@@ -53,7 +53,9 @@ public class NonLinearPlannerRegression {
 		State possibleState;
 		int resultRegression = 0;
 		boolean stateValid = true;
+		System.out.println("\n\n-------------------------------------------------");
 		for(Operator pOperator : possibleOperators) {
+			String prova = pOperator.printOperator();
 			stateValid = true;
 			possibleState = new State();
 			possibleState.setUsedOperators(goalState.getUsedOperators());
@@ -74,9 +76,21 @@ public class NonLinearPlannerRegression {
 				//Otherwise, the condition is achieved with the operator
 			}
 			if(stateValid) {
-				childs.add(possibleState);
-				validOperators.add(pOperator);
+				//Check if the state has any contradictory predicates
+				if(possibleState.isStateValid()) {
+					childs.add(possibleState);
+					validOperators.add(pOperator);
+				}else {
+					System.out.print(pOperator.printOperator() + "  ->  ");
+					System.out.println(possibleState.stateExplanation);
+				}
 			}
+		}
+		System.out.println("\n------------------------------------------");
+		System.out.println("Possible operators:");
+		
+		for(Operator operator : possibleOperators) {
+			System.out.println(operator.printOperator());
 		}
 		
 		System.out.println(String.format("The number of possible operators was %d, while the final valid operators is %d",possibleOperators.size(),validOperators.size()));
