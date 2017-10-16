@@ -68,14 +68,14 @@ public class Planner {
 	 */
 	private static void readInputFile() {
 		//Read input file
-		String filename = "files/input1.txt";
+		String filename = "files/testing1.txt";
 		BufferedReader br = null;
 		try {
 			br = new BufferedReader(new FileReader(filename));
 			
 			//Get MaxColumns
 			String line = br.readLine();
-			Matcher matcher = Pattern.compile("MaxColumns=(\\d*)").matcher(line);
+			Matcher matcher = Pattern.compile("MaxColumns=(\\d*);").matcher(line);
 			if(matcher.matches()) {
 				State.MaxColumns = Integer.parseInt(matcher.group(1));
 			}
@@ -84,7 +84,7 @@ public class Planner {
 			line = br.readLine();
 			matcher = Pattern.compile("Blocks=(.*);").matcher(line);
 			if(matcher.matches()) {
-				List<String> blist = Arrays.asList(matcher.group(1).split(","));
+				List<String> blist = Arrays.asList(matcher.group(1).split("\\."));
 				Block tempBlock = null;
 				String str = null;
 				for(String strBlock : blist) {
@@ -99,7 +99,7 @@ public class Planner {
 			matcher = Pattern.compile("InitialState=(.*);").matcher(line);
 			if(matcher.matches()) {
 				ArrayList<String> initialStateList = new ArrayList<String>();
-				List<String> tempList = Arrays.asList(matcher.group(1).split("\\),"));
+				List<String> tempList = Arrays.asList(matcher.group(1).split("\\."));
 				for(String predicate : tempList) {
 					//removes spaces before and after the strings and adds a ")" at the end
 					predicate = predicate.trim();
@@ -116,7 +116,7 @@ public class Planner {
 			matcher = Pattern.compile("GoalState=(.*);").matcher(line);
 			if(matcher.matches()) {
 				ArrayList<String> finalStateList = new ArrayList<String>();
-				List<String> tempList = Arrays.asList(matcher.group(1).split("\\),"));
+				List<String> tempList = Arrays.asList(matcher.group(1).split("\\."));
 				for(String predicate : tempList) {
 					//removes spaces before and after the strings and adds a ")" at the end
 					predicate = predicate.trim();
