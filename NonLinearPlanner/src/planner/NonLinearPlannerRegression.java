@@ -34,7 +34,7 @@ public class NonLinearPlannerRegression {
 		State tempState = new State();
 		boolean solved = false;
 		while(!solved && !stateQueue.isEmpty()) {
-			//System.out.println("Analizing...");
+			System.out.println("Analizing...");
 			tempState = stateQueue.get(0);
 			if(tempState.equals(initialState)) {
 				solved = true;
