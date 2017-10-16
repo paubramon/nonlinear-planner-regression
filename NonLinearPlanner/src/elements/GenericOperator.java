@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import elements.GenericOperator.OperatorType;
 import elements.Predicate.PredicateType;
-import main.Planner.Arm;
 
 /**
  * This class create a generic operator, where all the predicates in preconditions, addlist 
@@ -16,7 +15,10 @@ import main.Planner.Arm;
 
 public class GenericOperator {
 	public static enum OperatorType{
-		PICK_UP_RIGHT, PICK_UP_LEFT, UNSTACK_RIGHT, UNSTACK_LEFT, STACK, LEAVE
+		PICK_UP_RIGHT, PICK_UP_LEFT, UNSTACK_RIGHT, UNSTACK_LEFT, STACK_RIGHT,STACK_LEFT, LEAVE_RIGHT,LEAVE_LEFT
+	}
+	public static enum Arm{
+		R,L
 	}
 	
 	private ArrayList<String> preConditions = new ArrayList<String>();
@@ -38,10 +40,10 @@ public class GenericOperator {
 			numOfBlocks = 1;
 			preConditions.add("ON-TABLE(?x)");
 			preConditions.add("CLEAR(?x)");
-			preConditions.add("EMPTY-ARM(R)");
+			preConditions.add("EMPTY-ARM(?a)");
 			deletedConditions.add("ON-TABLE(?x)");
-			deletedConditions.add("EMPTY-ARM(R)");
-			addedConditions.add("HOLDING(?x,R)");
+			deletedConditions.add("EMPTY-ARM(?a)");
+			addedConditions.add("HOLDING(?x,?a)");
 			addedConditions.add("USED-COLS-NUM(n+1)");
 			break;
 			
@@ -50,11 +52,11 @@ public class GenericOperator {
 			numOfBlocks = 1;
 			preConditions.add("ON-TABLE(?x)");
 			preConditions.add("CLEAR(?x)");
-			preConditions.add("EMPTY-ARM(L)");
+			preConditions.add("EMPTY-ARM(?a)");
 			preConditions.add("LIGHT-BLOCK(?x)");
 			deletedConditions.add("ON-TABLE(?x)");
-			deletedConditions.add("EMPTY-ARM(L)");
-			addedConditions.add("HOLDING(?x,L)");
+			deletedConditions.add("EMPTY-ARM(?a)");
+			addedConditions.add("HOLDING(?x,?a)");
 			addedConditions.add("USED-COLS-NUM(n+1)");
 			break;
 			
@@ -63,10 +65,10 @@ public class GenericOperator {
 			numOfBlocks = 2;
 			preConditions.add("ON(?x,?y)");
 			preConditions.add("CLEAR(?x)");
-			preConditions.add("EMPTY-ARM(R)");
+			preConditions.add("EMPTY-ARM(?a)");
 			deletedConditions.add("ON(?x,?y)");
-			deletedConditions.add("EMPTY-ARM(R)");
-			addedConditions.add("HOLDING(?x,R)");
+			deletedConditions.add("EMPTY-ARM(?a)");
+			addedConditions.add("HOLDING(?x,?a)");
 			addedConditions.add("CLEAR(?y)");
 			break;
 			
@@ -75,15 +77,16 @@ public class GenericOperator {
 			numOfBlocks = 2;
 			preConditions.add("ON(?x,?y)");
 			preConditions.add("CLEAR(?x)");
-			preConditions.add("EMPTY-ARM(R)");
+			preConditions.add("EMPTY-ARM(?a)");
 			preConditions.add("LIGHT-BLOCK(?x)");
 			deletedConditions.add("ON(?x,?y)");
-			deletedConditions.add("EMPTY-ARM(R)");
-			addedConditions.add("HOLDING(?x,R)");
+			deletedConditions.add("EMPTY-ARM(?a)");
+			addedConditions.add("HOLDING(?x,?a)");
 			addedConditions.add("CLEAR(?y)");
 			break;
 			
-		case STACK:
+		case STACK_RIGHT:
+			arm = Arm.R;
 			numOfBlocks = 2;
 			preConditions.add("HOLDING(?x,?a)");
 			preConditions.add("CLEAR(?y)");
@@ -94,7 +97,31 @@ public class GenericOperator {
 			addedConditions.add("EMPTY-ARM(?a)");
 			break; 
 			
-		case LEAVE:
+		case STACK_LEFT:
+			arm = Arm.L;
+			numOfBlocks = 2;
+			preConditions.add("HOLDING(?x,?a)");
+			preConditions.add("CLEAR(?y)");
+			preConditions.add("HEAVIER(?x,?y)");
+			deletedConditions.add("CLEAR(?y)");
+			deletedConditions.add("HOLDING(?x,?a)");
+			addedConditions.add("ON(?x,?y)");
+			addedConditions.add("EMPTY-ARM(?a)");
+			break; 
+			
+		case LEAVE_RIGHT:
+			arm = Arm.R;
+			numOfBlocks = 1;
+			preConditions.add("HOLDING(?x,?a)");
+			preConditions.add("USED-COLS-NUM(n) n>0");
+			deletedConditions.add("HOLDING(?x,?a)");
+			addedConditions.add("ON-TABLE(?x)");
+			addedConditions.add("EMPTY-ARM(?a)");
+			addedConditions.add("USED-COLS-NUM(n-1)");
+			break;
+			
+		case LEAVE_LEFT:
+			arm = Arm.L;
 			numOfBlocks = 1;
 			preConditions.add("HOLDING(?x,?a)");
 			preConditions.add("USED-COLS-NUM(n) n>0");
@@ -165,7 +192,7 @@ public class GenericOperator {
 			//We search for all the possible combinations of this operator with the given blocks
 			for(Block block1 : blocks) {
 				for(Block block2 : blocks) {
-					if(block1 != block2) {
+					if(!block1.equals(block2)) {
 						tempOp = getOperator(block1,block2);
 						if(tempOp.isInAddList(condition) && !possibleOperators.contains(tempOp)) possibleOperators.add(tempOp);
 					}

@@ -3,8 +3,6 @@ package elements;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import main.Planner.Arm;
-
 /**
  * This class will create generic predicates objects. These can be used together with the GenericOperators
  * class in order to define our system.

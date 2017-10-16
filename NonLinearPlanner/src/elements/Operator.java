@@ -2,9 +2,9 @@ package elements;
 
 import java.util.ArrayList;
 
+import elements.GenericOperator.Arm;
 import elements.GenericOperator.OperatorType;
 import elements.Predicate.PredicateType;
-import main.Planner.Arm;
 
 public class Operator {
 	private ArrayList<String> preConditions = new ArrayList<String>();
@@ -51,10 +51,12 @@ public class Operator {
 		case UNSTACK_LEFT:
 			rootString = "UNSTACK-LEFT";
 			break;
-		case STACK:
+		case STACK_RIGHT:
+		case STACK_LEFT:
 			rootString = "STACK";
 			break; 
-		case LEAVE:
+		case LEAVE_RIGHT:
+		case LEAVE_LEFT:
 			rootString = "LEAVE";
 			break;
 		}

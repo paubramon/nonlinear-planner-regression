@@ -16,9 +16,7 @@ import planner.NonLinearPlannerRegression;
 import elements.GenericOperator.OperatorType;
 
 public class Planner {
-	public static enum Arm{
-		R,L
-	}
+	
 	public static ArrayList<GenericOperator> operators = new ArrayList<GenericOperator>();
 	public static ArrayList<State> stateLevel = new ArrayList<State>();
 	public static ArrayList<Block> blocks = new ArrayList<Block>();
@@ -33,6 +31,12 @@ public class Planner {
 		NonLinearPlannerRegression planner = new NonLinearPlannerRegression(operators, initialState, finalState, blocks);
 		planner.runPlanner();
 		
+		/* Block for testing State properties
+		State prova = new State();
+		prova.addPredicate("HOLDING(A,R)");
+		prova.addPredicate("EMPTY-ARM(R)");
+		System.out.println(String.format("State is: %b\nExplanation is: %s", prova.isStateValid(),prova.stateExplanation));
+		*/
 	}
 	
 	/**
@@ -40,10 +44,12 @@ public class Planner {
 	 */
 	private static void setupPlanner() {
 		// Create operators list
-		operators.add(new GenericOperator(OperatorType.LEAVE));
+		operators.add(new GenericOperator(OperatorType.LEAVE_RIGHT));
+		operators.add(new GenericOperator(OperatorType.LEAVE_LEFT));
 		operators.add(new GenericOperator(OperatorType.PICK_UP_LEFT));
 		operators.add(new GenericOperator(OperatorType.PICK_UP_RIGHT));
-		operators.add(new GenericOperator(OperatorType.STACK));
+		operators.add(new GenericOperator(OperatorType.STACK_RIGHT));
+		operators.add(new GenericOperator(OperatorType.STACK_LEFT));
 		operators.add(new GenericOperator(OperatorType.UNSTACK_LEFT));
 		operators.add(new GenericOperator(OperatorType.UNSTACK_RIGHT));
 		
