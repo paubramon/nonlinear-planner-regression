@@ -1,7 +1,6 @@
 package elements;
 
 import java.util.ArrayList;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import elements.Predicate.PredicateType;
@@ -50,7 +49,7 @@ public class State {
 	 * Getters and Setters
 	 */
 	public ArrayList<String> getPredicates() {
-		return (ArrayList<String>) predicates.clone();
+		return new ArrayList<String>(predicates);
 	}
 	
 	public void setPredicates(ArrayList<String> predicates) {
@@ -58,7 +57,7 @@ public class State {
 	}
 
 	public ArrayList<String> getUsedOperators() {
-		return (ArrayList<String>) usedOperators.clone();
+		return new ArrayList<String>(usedOperators);
 	}
 	
 	public void setUsedOperators(ArrayList<String> usedOperators) {
@@ -157,11 +156,9 @@ public class State {
 	 */
 	private boolean isPredicateContradictory(String predicate) {
 		String predicatesList = String.join(";", predicates) + ";" + String.join(";", environmentConditions) + ";";
-		Matcher matcher;
 		String blockname1;
 		String blockname2;
 		String armname;
-		PredicateType prova = Predicate.findType(predicate);
 		switch(Predicate.findType(predicate)) {
 		case CLEAR:
 			blockname1 = predicate.substring(6, 7);
@@ -221,6 +218,8 @@ public class State {
 				return true;
 			}
 			break;
+		default:
+			return false;
 		}		
 		return false;
 	}
@@ -261,8 +260,8 @@ public class State {
 		
 		State state = (State) other;
 		
-		ArrayList<String> predicates1 = (ArrayList<String>) this.predicates.clone();
-		ArrayList<String> predicates2 = (ArrayList<String>) state.predicates.clone();
+		ArrayList<String> predicates1 = new ArrayList<String>(this.predicates);
+		ArrayList<String> predicates2 = new ArrayList<String>(state.predicates);
 		predicates1.sort(null);
 		predicates2.sort(null);
 		

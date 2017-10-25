@@ -2,7 +2,6 @@ package elements;
 
 import java.util.ArrayList;
 
-import elements.GenericOperator.OperatorType;
 import elements.Predicate.PredicateType;
 
 /**

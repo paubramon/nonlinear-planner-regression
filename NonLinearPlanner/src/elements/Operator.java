@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import elements.GenericOperator.Arm;
 import elements.GenericOperator.OperatorType;
-import elements.Predicate.PredicateType;
 
 public class Operator {
 	private ArrayList<String> preConditions = new ArrayList<String>();

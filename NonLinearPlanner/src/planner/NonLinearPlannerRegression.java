@@ -12,18 +12,13 @@ public class NonLinearPlannerRegression {
 	private State finalState;
 	private State initialState;
 	private ArrayList<Block> blocks = new ArrayList<Block>();
-	private ArrayList<String> environmentConditions = new ArrayList<String>();
-	private ArrayList<State> stateLevel = new ArrayList<State>();
-	private ArrayList<State> visitedStates = new ArrayList<State>();
 	
 	public NonLinearPlannerRegression(ArrayList<GenericOperator> operators, State initialState, 
 			State finalState, ArrayList<Block> blocks) {
 		this.operators = operators;
 		this.initialState = initialState;
 		this.finalState = finalState; 
-		this.environmentConditions = environmentConditions;
-		this.blocks = blocks; 
-		stateLevel.add(finalState);
+		this.blocks = blocks;
 	}
 	
 	public ArrayList<String> runPlanner(){
