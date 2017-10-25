@@ -1,6 +1,7 @@
 package elements;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import elements.Predicate.PredicateType;
 
@@ -173,9 +174,18 @@ public class GenericOperator {
 	 * This method returns a list of possible operators that would add the condition with the provided blocks
 	 * @return ArrayList<Operators>, will return an empty list if there aren't possible combinations with the given parameters.
 	 */
-	public ArrayList<Operator> findCombinations(ArrayList<Block> blocks, String condition){
+	public ArrayList<Operator> findCombinations(ArrayList<Block> blocks, String condition, ArrayList<String> statePredicates){
 		ArrayList<Operator> possibleOperators = new ArrayList<Operator>();
 		PredicateType searchedType = Predicate.findType(condition);
+		
+		/*
+		 * Firstly, we created this method in order to find ALL possible operations that satisfied the given condition (that contained the 
+		 * conditions in the add List of the operator). 
+		 * The second version of this function adds some of the functionality provided by the regression function, discarting the operator if 
+		 * it contains one of the conditions of the goal state in the delete list. To use this version, you should set the
+		 * variable selectiveVersion to true
+		 */
+		boolean selectiveVersion = true;
 		
 		/*
 		 * First, we check if the condition is in the add list of this operator
@@ -193,7 +203,19 @@ public class GenericOperator {
 				for(Block block2 : blocks) {
 					if(!block1.equals(block2)) {
 						tempOp = getOperator(block1,block2);
-						if(tempOp.isInAddList(condition) && !possibleOperators.contains(tempOp)) possibleOperators.add(tempOp);
+						if(tempOp.isInAddList(condition) 
+								&& !possibleOperators.contains(tempOp)) { 
+							// Condition 1 : Checks if the condition is in the addList of the operator
+							// Condition 2 : Checks that the operator is not already in the list
+							if (selectiveVersion && Collections.disjoint(statePredicates, tempOp.getDeletedConditions()) 
+								&& tempOp.matchAddedConditions(statePredicates)) { 
+								//Condition 3: Checks if any of the conditions of the goal state is in the delete list of the possible operator
+								//Condition 4: Checks if any conditions in the add list of the operator is not in the goal State
+								possibleOperators.add(tempOp);
+							}else if(!selectiveVersion) {
+								possibleOperators.add(tempOp);
+							}
+						}			
 					}
 				}
 			}

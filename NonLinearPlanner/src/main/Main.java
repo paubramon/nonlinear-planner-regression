@@ -1,7 +1,10 @@
 package main;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,11 +18,12 @@ import elements.State;
 import planner.NonLinearPlannerRegression;
 import elements.GenericOperator.OperatorType;
 
-public class Planner {
+public class Main {
 	
 	//Constants for reading the file
 	public static final String INPUT_FILE = "testing1.txt";
 	public static final String INPUT_PATH = "files/";
+	public static final String OUTPUT_PATH = "output/";
 	
 	//Variables of the planner
 	public static ArrayList<GenericOperator> operators = new ArrayList<GenericOperator>();
@@ -31,11 +35,20 @@ public class Planner {
 	public static void main(String[] args) {
 		//Execute setup method
 		setupPlanner(); 
+		//Read input file
 		readInputFile();
+		//Get environment conditions
 		findEnvironmentConditions();
-		NonLinearPlannerRegression non_linear_planner = new NonLinearPlannerRegression(operators, initialState, finalState, blocks);
-		non_linear_planner.runPlanner();
 		
+		//Run the planner once
+		NonLinearPlannerRegression non_linear_planner = new NonLinearPlannerRegression(operators, initialState, finalState, blocks);
+		non_linear_planner.runPlanner(true);
+		
+		//Create the output file
+		String text_to_print = non_linear_planner.getTextCorrectPlan();
+		text_to_print = text_to_print + String.format("\n\n\nFirst %d cancelled States",NonLinearPlannerRegression.NUM_CANCELLED_STATES);
+		text_to_print = text_to_print + non_linear_planner.getTextCancelledStates();
+		printOutputFile(text_to_print,OUTPUT_PATH + "Solved_" + INPUT_FILE);		
 	}
 	
 	/**
@@ -139,6 +152,23 @@ public class Planner {
             }
         }		
 		
+	}
+	
+	public static void printOutputFile(String text, String filename) {
+		BufferedWriter writer = null;
+		try {
+			writer = new BufferedWriter(new FileWriter(new File(filename)));
+			writer.write(text);
+		}catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				//Close the writer
+				writer.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
 	}
 	
 	/**

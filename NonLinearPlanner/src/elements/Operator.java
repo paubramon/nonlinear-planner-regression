@@ -1,11 +1,11 @@
 package elements;
 
 import java.util.ArrayList;
-
 import elements.GenericOperator.Arm;
 import elements.GenericOperator.OperatorType;
 
 public class Operator {
+	private static final String[] EXCLUDED_CONDITIONS = {"USED-COLS-NUM(n) n>0","USED-COLS-NUM(n+1)","USED-COLS-NUM(n-1)"};
 	private ArrayList<String> preConditions = new ArrayList<String>();
 	private ArrayList<String> addedConditions = new ArrayList<String>();
 	private ArrayList<String> deletedConditions = new ArrayList<String>();
@@ -51,12 +51,16 @@ public class Operator {
 			rootString = "UNSTACK-LEFT";
 			break;
 		case STACK_RIGHT:
+			rootString = "STACK-RIGHT";
+			break; 
 		case STACK_LEFT:
-			rootString = "STACK";
+			rootString = "STACK-LEFT";
 			break; 
 		case LEAVE_RIGHT:
+			rootString = "LEAVE-RIGHT";
+			break;
 		case LEAVE_LEFT:
-			rootString = "LEAVE";
+			rootString = "LEAVE-LEFT";
 			break;
 		}
 	}
@@ -148,6 +152,14 @@ public class Operator {
 		}else {
 			return false;	
 		}
+	}
+	
+	public boolean matchAddedConditions(ArrayList<String> predicates) {
+		ArrayList<String> tempAddList = new ArrayList<String>(addedConditions);
+		for(String exCond : EXCLUDED_CONDITIONS) {
+			tempAddList.remove(exCond);
+		}
+		return predicates.containsAll(tempAddList);
 	}
 	
 	@Override

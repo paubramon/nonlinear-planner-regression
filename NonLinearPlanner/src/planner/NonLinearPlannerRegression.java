@@ -8,10 +8,21 @@ import elements.Operator;
 import elements.State;
 
 public class NonLinearPlannerRegression {
+	
+	public static final int NUM_CANCELLED_STATES = 100;
+	public static final String TEXT_SEPARATOR = "-------------------------------------------\n";
+	
+	
 	private ArrayList<GenericOperator> operators = new ArrayList<GenericOperator>();
 	private State finalState;
 	private State initialState;
 	private ArrayList<Block> blocks = new ArrayList<Block>();
+	private ArrayList<State> stateQueue = new ArrayList<State>();
+	private ArrayList<State> visitedStates = new ArrayList<State>();
+	private int totalNumStates = 0;
+	private String textCancelledStates = "";
+	private int storedCancelledStates = 0;
+	private String textCorrectPlan = ""; 
 	
 	public NonLinearPlannerRegression(ArrayList<GenericOperator> operators, State initialState, 
 			State finalState, ArrayList<Block> blocks) {
@@ -21,15 +32,31 @@ public class NonLinearPlannerRegression {
 		this.blocks = blocks;
 	}
 	
-	public ArrayList<String> runPlanner(){
-		ArrayList<State> stateQueue = new ArrayList<State>();
-		ArrayList<State> visitedStates = new ArrayList<State>();
-		stateQueue.add(finalState);
+	/*
+	 * Getters
+	 */	
+	public String getTextCancelledStates() {
+		return textCancelledStates;
+	}
+
+	public String getTextCorrectPlan() {
+		return textCorrectPlan;
+	}	
+	
+	public ArrayList<String> runPlanner(boolean printOutput){
+		//Initialization of variables
+		textCancelledStates = "Details of the states that were cancelled:\n"; //Variables for storing text of the cancelled states
+		textCancelledStates = textCancelledStates + TEXT_SEPARATOR;
+		textCorrectPlan = "";
+		storedCancelledStates = 0; //Variables for counting the states that were cancelled
+		totalNumStates = 1; //Number of visited states (repeated or not)
 		
+		//Run the algorithm
+		stateQueue.add(finalState);
 		State tempState = new State();
 		boolean solved = false;
 		while(!solved && !stateQueue.isEmpty()) {
-			System.out.println("Analizing...");
+			//System.out.println("Analizing...");
 			tempState = stateQueue.get(0);
 			if(tempState.equals(initialState)) {
 				solved = true;
@@ -41,13 +68,27 @@ public class NonLinearPlannerRegression {
 			stateQueue.remove(0);
 		}
 		if(solved && !tempState.getUsedOperators().isEmpty()) {
-			System.out.println("Solved!!");
-			System.out.println("Number of operators of the plan: " + tempState.getUsedOperators().size());
-			System.out.println("Number of states generated to solve the problem: " + visitedStates.size());
-			System.out.println("Plan: " + String.join(",", tempState.getUsedOperators()));
+			textCorrectPlan = "Solved!!\n\n";
+			textCorrectPlan = textCorrectPlan + "Number of operators of the plan: " + tempState.getUsedOperators().size() + "\n";
+			textCorrectPlan = textCorrectPlan + "Number of states generated to solve the problem: " + visitedStates.size() + "\n";
+			textCorrectPlan = textCorrectPlan + "Total number of correct and incorrect states generated to solve the problem: " + totalNumStates + "\n";
+			textCorrectPlan = textCorrectPlan + "Plan: " + String.join(",", tempState.getUsedOperators()) + "\n";
 			
+			if(printOutput) {
+				System.out.println("Solved!!");
+				System.out.println("Number of operators of the plan: " + tempState.getUsedOperators().size());
+				System.out.println("Number of states generated to solve the problem: " + visitedStates.size());
+				System.out.println("Total number of correct and incorrect states generated to solve the problem: " + totalNumStates);
+				System.out.println("Plan: " + String.join(",", tempState.getUsedOperators()));
+				
+				System.out.println(String.format("\nFirst %d cancelled States",NUM_CANCELLED_STATES));
+				System.out.println(textCancelledStates);
+			}
 		}else {
-			System.out.println("Unable to find a plan...");
+			textCorrectPlan = "Unable to find a plan...";
+			if(printOutput) {
+				System.out.println("Unable to find a plan...");
+			}
 		}
 		return tempState.getUsedOperators();
 	}
@@ -64,7 +105,7 @@ public class NonLinearPlannerRegression {
 		//This loop searches all the possible operators that could add one of the conditions in the final state.
 		for(String condition : finalConditions) {
 			for(GenericOperator operator : operators) {
-				for(Operator opp : operator.findCombinations(blocks, condition)) {
+				for(Operator opp : operator.findCombinations(blocks, condition,goalState.getPredicates())) {
 					if(!possibleOperators.contains(opp)) possibleOperators.add(opp);	
 				}	
 			}
@@ -81,6 +122,7 @@ public class NonLinearPlannerRegression {
 			possibleState.setUsedOperators(goalState.getUsedOperators());
 			possibleState.addAllPredicate(pOperator.getPreConditions());
 			possibleState.addOperator(pOperator.printOperator());
+			totalNumStates += 1;
 			
 			//Lets check with the regression function if all the conditions are achievable
 			for(String condition : finalConditions) {
@@ -100,24 +142,17 @@ public class NonLinearPlannerRegression {
 				if(possibleState.isStateValid()) {
 					childs.add(possibleState);
 					validOperators.add(pOperator);
-				}else {
-					//System.out.print(pOperator.printOperator() + "  ->  ");
-					//System.out.println(possibleState.stateExplanation);
+				}else if(storedCancelledStates < NUM_CANCELLED_STATES){
+					storedCancelledStates += 1;
+					textCancelledStates = textCancelledStates + Integer.toString(storedCancelledStates) + "\n";
+					textCancelledStates = textCancelledStates + "Predicates -> " + String.join(",", possibleState.getPredicates()) + "\n";
+					textCancelledStates = textCancelledStates + "Operators Used -> " + String.join(",", possibleState.getUsedOperators()) + "\n";
+					textCancelledStates = textCancelledStates + "Reason for cancelling the exploration -> " + possibleState.stateExplanation + "\n";
+					textCancelledStates = textCancelledStates + possibleState.stateExplanation + "\n";
+					textCancelledStates = textCancelledStates + TEXT_SEPARATOR;
 				}
 			}
 		}
-		/*System.out.println("\n------------------------------------------");
-		System.out.println("Possible operators:");
-		
-		for(Operator operator : possibleOperators) {
-			System.out.println(operator.printOperator());
-		}
-		
-		System.out.println(String.format("The number of possible operators was %d, while the final valid operators is %d",possibleOperators.size(),validOperators.size()));
-		
-		for(Operator operator : validOperators) {
-			System.out.println(operator.printOperator());
-		}*/
 		
 		return childs;
 	}
