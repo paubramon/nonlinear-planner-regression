@@ -46,8 +46,11 @@ public class NonLinearPlannerRegression {
 			stateQueue.remove(0);
 		}
 		if(solved && !tempState.getUsedOperators().isEmpty()) {
-			System.out.println("Solved!! The plan is:");
-			System.out.println(String.join(",", tempState.getUsedOperators()));
+			System.out.println("Solved!!");
+			System.out.println("Number of operators of the plan: " + tempState.getUsedOperators().size());
+			System.out.println("Number of states generated to solve the problem: " + visitedStates.size());
+			System.out.println("Plan: " + String.join(",", tempState.getUsedOperators()));
+			
 		}else {
 			System.out.println("Unable to find a plan...");
 		}

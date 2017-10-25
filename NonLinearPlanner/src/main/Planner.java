@@ -17,6 +17,11 @@ import elements.GenericOperator.OperatorType;
 
 public class Planner {
 	
+	//Constants for reading the file
+	public static final String INPUT_FILE = "testing1.txt";
+	public static final String INPUT_PATH = "files/";
+	
+	//Variables of the planner
 	public static ArrayList<GenericOperator> operators = new ArrayList<GenericOperator>();
 	public static ArrayList<State> stateLevel = new ArrayList<State>();
 	public static ArrayList<Block> blocks = new ArrayList<Block>();
@@ -28,15 +33,9 @@ public class Planner {
 		setupPlanner(); 
 		readInputFile();
 		findEnvironmentConditions();
-		NonLinearPlannerRegression planner = new NonLinearPlannerRegression(operators, initialState, finalState, blocks);
-		planner.runPlanner();
+		NonLinearPlannerRegression non_linear_planner = new NonLinearPlannerRegression(operators, initialState, finalState, blocks);
+		non_linear_planner.runPlanner();
 		
-		/* Block for testing State properties
-		State prova = new State();
-		prova.addPredicate("HOLDING(A,R)");
-		prova.addPredicate("EMPTY-ARM(R)");
-		System.out.println(String.format("State is: %b\nExplanation is: %s", prova.isStateValid(),prova.stateExplanation));
-		*/
 	}
 	
 	/**
@@ -68,7 +67,7 @@ public class Planner {
 	 */
 	private static void readInputFile() {
 		//Read input file
-		String filename = "files/testing1.txt";
+		String filename = INPUT_PATH + INPUT_FILE;
 		BufferedReader br = null;
 		try {
 			br = new BufferedReader(new FileReader(filename));
