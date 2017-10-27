@@ -2,13 +2,13 @@ package planner;
 
 import java.util.ArrayList;
 
+import display.MultipleStateDisplay;
+import display.SimpleGraph;
+import display.StateDisplay;
 import elements.Block;
 import elements.GenericOperator;
 import elements.Operator;
 import elements.State;
-import main.MultipleStateDisplay;
-import main.SimpleGraph;
-import main.StateDisplay;
 
 public class NonLinearPlannerRegression {
 	
