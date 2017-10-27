@@ -126,11 +126,11 @@ public class NonLinearPlannerRegression {
 				
 				while (displayedState != null) {
 					if (jj == 0) {
-						title = "Initial State";
+						title = "Initial_State";
 					} else if (jj == totalOperations) {
-						title = "Final State";
+						title = "Final_State";
 					} else {
-						title = "State " + Integer.toString(jj);
+						title = "State_" + Integer.toString(jj);
 					}
 					multiDisplay.printNewState(displayedState, title, directory);
 					displayedState = displayedState.parentState;
