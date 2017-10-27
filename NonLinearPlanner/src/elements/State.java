@@ -12,11 +12,12 @@ import elements.Predicate.PredicateType;
 public class State {
 	
 	public static ArrayList<String> environmentConditions = new ArrayList<String>(); //These are all the unchangeable conditions of the environment. These does not depend on the state, are implicit in the environment.  
-	public static int MaxColumns = 3; //Number of spaces on the table (by default is set to 3).
+	public static int maxColumns = 3; //Number of spaces on the table (by default is set to 3).
 	private ArrayList<String> predicates = new ArrayList<String>();
 	private ArrayList<String> usedOperators = new ArrayList<String>();
 	private int availableSpace;
 	public String stateExplanation = "Correct State"; //This will show if the state is correct or the reason why it's not
+	public State parentState = null;
 	
 	/**
 	 * First possible constructor, where we specify the used operators.
@@ -62,6 +63,16 @@ public class State {
 	
 	public void setUsedOperators(ArrayList<String> usedOperators) {
 		this.usedOperators = usedOperators;
+	}
+	
+	public int getAvailableSpace() {
+		this.availableSpace = calculateAvailableSpace();
+		return availableSpace;
+	}
+
+	public int getUsedSpace() {
+		this.availableSpace = calculateAvailableSpace();
+		return maxColumns - availableSpace;
 	}
 	
 	/**
@@ -228,7 +239,7 @@ public class State {
 	 * Method used internally to calculate the available space on the table in the current state
 	 */
 	private int calculateAvailableSpace() {
-		int available_space = MaxColumns;
+		int available_space = maxColumns;
 		for(String predicate : predicates) {
 			if(Predicate.findType(predicate) == PredicateType.ON_TABLE) available_space -= 1;
 		}
@@ -251,6 +262,7 @@ public class State {
 			return false;
 		}
 	}
+	
 	
 	@Override
 	public boolean equals(Object other) {

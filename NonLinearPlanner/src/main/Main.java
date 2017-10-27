@@ -21,7 +21,7 @@ import elements.GenericOperator.OperatorType;
 public class Main {
 	
 	//Constants for reading the file
-	public static final String INPUT_FILE = "testing1.txt";
+	public static final String INPUT_FILE = "testing2.txt";
 	public static final String INPUT_PATH = "files/";
 	public static final String OUTPUT_PATH = "output/";
 	
@@ -40,15 +40,34 @@ public class Main {
 		//Get environment conditions
 		findEnvironmentConditions();
 		
+		//Check if the final and initial states are possible
+		if(initialState.isStateValid()) {
+			System.out.println("Initial State valid");
+		}else {
+			System.out.println("Initial State NOT valid");
+			System.out.println(initialState.stateExplanation);
+		}
+		if(finalState.isStateValid()) {
+			System.out.println("Final State valid");
+		}else {
+			System.out.println("Final State NOT valid");
+			System.out.println(finalState.stateExplanation);
+		}		
+		
 		//Run the planner once
 		NonLinearPlannerRegression non_linear_planner = new NonLinearPlannerRegression(operators, initialState, finalState, blocks);
 		non_linear_planner.runPlanner(true);
+		
+		/*
+		//Plot time solution with different maxColumns
+		non_linear_planner.runGraphForColumns();
 		
 		//Create the output file
 		String text_to_print = non_linear_planner.getTextCorrectPlan();
 		text_to_print = text_to_print + String.format("\n\n\nFirst %d cancelled States",NonLinearPlannerRegression.NUM_CANCELLED_STATES);
 		text_to_print = text_to_print + non_linear_planner.getTextCancelledStates();
-		printOutputFile(text_to_print,OUTPUT_PATH + "Solved_" + INPUT_FILE);		
+		printOutputFile(text_to_print,OUTPUT_PATH + "Solved_" + INPUT_FILE);
+		*/
 	}
 	
 	/**
@@ -89,7 +108,7 @@ public class Main {
 			String line = br.readLine();
 			Matcher matcher = Pattern.compile("MaxColumns=(\\d*);").matcher(line);
 			if(matcher.matches()) {
-				State.MaxColumns = Integer.parseInt(matcher.group(1));
+				State.maxColumns = Integer.parseInt(matcher.group(1));
 			}
 			
 			//Get Blocks

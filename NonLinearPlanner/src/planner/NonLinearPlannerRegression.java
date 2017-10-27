@@ -6,11 +6,15 @@ import elements.Block;
 import elements.GenericOperator;
 import elements.Operator;
 import elements.State;
+import main.MultipleStateDisplay;
+import main.SimpleGraph;
+import main.StateDisplay;
 
 public class NonLinearPlannerRegression {
 	
 	public static final int NUM_CANCELLED_STATES = 100;
 	public static final String TEXT_SEPARATOR = "-------------------------------------------\n";
+	public static final int MAX_NUMBER_OF_OPERATORS = 10000;
 	
 	
 	private ArrayList<GenericOperator> operators = new ArrayList<GenericOperator>();
@@ -23,6 +27,8 @@ public class NonLinearPlannerRegression {
 	private String textCancelledStates = "";
 	private int storedCancelledStates = 0;
 	private String textCorrectPlan = ""; 
+	private int totalOperations = 0;
+	private int algorithmIterations = 0;
 	
 	public NonLinearPlannerRegression(ArrayList<GenericOperator> operators, State initialState, 
 			State finalState, ArrayList<Block> blocks) {
@@ -43,20 +49,26 @@ public class NonLinearPlannerRegression {
 		return textCorrectPlan;
 	}	
 	
-	public ArrayList<String> runPlanner(boolean printOutput){
+	public boolean runPlanner(boolean printOutput) {
 		//Initialization of variables
 		textCancelledStates = "Details of the states that were cancelled:\n"; //Variables for storing text of the cancelled states
 		textCancelledStates = textCancelledStates + TEXT_SEPARATOR;
 		textCorrectPlan = "";
 		storedCancelledStates = 0; //Variables for counting the states that were cancelled
 		totalNumStates = 1; //Number of visited states (repeated or not)
+		stateQueue = new ArrayList<State>();
+		visitedStates = new ArrayList<State>();
 		
 		//Run the algorithm
 		stateQueue.add(finalState);
 		State tempState = new State();
 		boolean solved = false;
-		while(!solved && !stateQueue.isEmpty()) {
+		algorithmIterations = 0;
+		while(!solved && !stateQueue.isEmpty() &&algorithmIterations<MAX_NUMBER_OF_OPERATORS) {
 			//System.out.println("Analizing...");
+			if(printOutput && algorithmIterations%1000 == 0) {
+				System.out.println("Analizing... Number of iterations = " + algorithmIterations + ";");
+			}
 			tempState = stateQueue.get(0);
 			if(tempState.equals(initialState)) {
 				solved = true;
@@ -66,31 +78,47 @@ public class NonLinearPlannerRegression {
 				visitedStates.add(tempState);
 			}
 			stateQueue.remove(0);
+			algorithmIterations++;
 		}
 		if(solved && !tempState.getUsedOperators().isEmpty()) {
+			totalOperations = tempState.getUsedOperators().size();
 			textCorrectPlan = "Solved!!\n\n";
-			textCorrectPlan = textCorrectPlan + "Number of operators of the plan: " + tempState.getUsedOperators().size() + "\n";
+			textCorrectPlan = textCorrectPlan + "Number of operators of the plan: " + totalOperations + "\n";
 			textCorrectPlan = textCorrectPlan + "Number of states generated to solve the problem: " + visitedStates.size() + "\n";
 			textCorrectPlan = textCorrectPlan + "Total number of correct and incorrect states generated to solve the problem: " + totalNumStates + "\n";
 			textCorrectPlan = textCorrectPlan + "Plan: " + String.join(",", tempState.getUsedOperators()) + "\n";
 			
 			if(printOutput) {
 				System.out.println("Solved!!");
-				System.out.println("Number of operators of the plan: " + tempState.getUsedOperators().size());
+				System.out.println("Number of operators of the plan: " + totalOperations);
 				System.out.println("Number of states generated to solve the problem: " + visitedStates.size());
 				System.out.println("Total number of correct and incorrect states generated to solve the problem: " + totalNumStates);
 				System.out.println("Plan: " + String.join(",", tempState.getUsedOperators()));
 				
 				System.out.println(String.format("\nFirst %d cancelled States",NUM_CANCELLED_STATES));
 				System.out.println(textCancelledStates);
+				
+				//DISPLAY STATES
+				State displayedState = tempState;
+				MultipleStateDisplay multiDisplay = new MultipleStateDisplay();
+				int jj = 0;
+				while(displayedState != null) {
+					String title = "State "+ Integer.toString(totalOperations - jj);
+					multiDisplay.printNewState(displayedState, title);
+					displayedState = displayedState.parentState;
+					jj++;
+				
+				}
 			}
+			return true;
 		}else {
+			totalOperations = 0;
 			textCorrectPlan = "Unable to find a plan...";
 			if(printOutput) {
 				System.out.println("Unable to find a plan...");
 			}
+			return false;
 		}
-		return tempState.getUsedOperators();
 	}
 	
 	/**
@@ -122,6 +150,7 @@ public class NonLinearPlannerRegression {
 			possibleState.setUsedOperators(goalState.getUsedOperators());
 			possibleState.addAllPredicate(pOperator.getPreConditions());
 			possibleState.addOperator(pOperator.printOperator());
+			possibleState.parentState = goalState;
 			totalNumStates += 1;
 			
 			//Lets check with the regression function if all the conditions are achievable
@@ -171,6 +200,46 @@ public class NonLinearPlannerRegression {
 		if(operator.isInAddList(condition)) return 1;
 		if(operator.isInDelList(condition)) return 0;
 		return 2;
+	}
+	
+	public void runGraphForColumns() {
+		int number_of_blocks = blocks.size();
+		double[] available_space = new double[number_of_blocks+1];
+		double[] operations = new double[number_of_blocks+1];
+		int first_solvable = 0;
+		for(int i=0; i<=number_of_blocks; i++) {
+			if(i<finalState.getUsedSpace()) {
+				//for a final state using more space than the available, the plan is impossible
+				System.out.println(i);
+				available_space[i] = i;
+				operations[i] = 0;
+			}else {
+				System.out.println(i);
+				available_space[i] = i;
+				State.maxColumns = i;
+				if(runPlanner(false)) {
+					if(first_solvable == 0) { first_solvable = i;}
+					//operations[i] = algorithmIterations;
+					operations[i] = totalOperations;
+				}else {
+					operations[i] = 0;
+				}
+			}
+		}
+		
+		double[] x = new double[number_of_blocks-first_solvable+1];
+		double[] y = new double[number_of_blocks-first_solvable+1];
+		
+		for(int i = 0;i<=number_of_blocks-first_solvable; i++) {
+			x[i] = available_space[i+first_solvable];
+			y[i] = operations[i+first_solvable];
+		}
+		
+		
+		SimpleGraph chart = new SimpleGraph("Operations", "Operations vs MaxColumns", "Max number of columns", "Operations of the plan", available_space, operations);
+		chart.displayPlot();
+		SimpleGraph chart2 = new SimpleGraph("Operations", "Operations vs MaxColumns", "Max number of columns", "Operations of the plan", x, y);
+		chart2.displayPlot();
 	}
 	
 }
