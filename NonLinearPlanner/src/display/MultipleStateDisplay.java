@@ -8,23 +8,23 @@ import elements.Predicate.PredicateType;
 
 public class MultipleStateDisplay {
 	private String[] bestColumns = new String[20];
+	public boolean free;
 
 	public MultipleStateDisplay() {
 		clearBestColumns();
+		free = true;
 	}
 
-	public void printNewState(State state, String figTitle) {
+	public void printNewState(State state, String figTitle, String directory) {
+		free = false;
 		// Variables to print the state
-		int step_size = StateDisplay.SIZE_X / (state.maxColumns + 1);
-		int block_size = step_size - 30;
-		String[] columnLastElement = new String[state.maxColumns];
-		int[] columnHeight = new int[state.maxColumns];
-		int ground_value = StateDisplay.SIZE_Y - (9 * StateDisplay.MARGIN);
-		String[] tempLast = new String[state.maxColumns];
-		int[] tempHeight = new int[state.maxColumns];
+		String[] columnLastElement = new String[State.maxColumns];
+		int[] columnHeight = new int[State.maxColumns];
+		String[] tempLast = new String[State.maxColumns];
+		int[] tempHeight = new int[State.maxColumns];
 		
 		//initialize
-		for (int i = 1; i <= state.maxColumns; i++) {
+		for (int i = 1; i <= State.maxColumns; i++) {
 			columnLastElement[i - 1] = "";
 			columnHeight[i - 1] = 0;
 			tempLast[i-1] = "";
@@ -39,7 +39,7 @@ public class MultipleStateDisplay {
 		for (String predicate : predicates) {
 			if (Predicate.findType(predicate) == PredicateType.ON_TABLE) {
 				columnLastElement[jj - 1] = predicate.substring(9, 10);
-				columnHeight[jj - 1] = ground_value - StateDisplay.BLOCK_HEIGHT;
+				columnHeight[jj - 1] = CreateStateImage.GROUND - CreateStateImage.BLOCK_HEIGHT;
 				jj++;
 			}
 		}
@@ -73,7 +73,8 @@ public class MultipleStateDisplay {
 			this.bestColumns[i - 1] = columnLastElement[i - 1];
 		}
 		
-		StateDisplay.createMultipleState(state,figTitle,columnLastElement,columnHeight);
+		CreateStateImage stateImage = new CreateStateImage(state, figTitle, columnLastElement, columnHeight);
+		stateImage.createGrafic(directory);
 	}
 	
 	private int findElementInColumn(String[] columns, String target) {

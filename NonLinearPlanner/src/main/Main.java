@@ -21,7 +21,8 @@ import elements.GenericOperator.OperatorType;
 public class Main {
 	
 	//Constants for reading the file
-	public static final String INPUT_FILE = "testing2.txt";
+	public static final String FILE_EXTENSION = ".txt";
+	public static final String INPUT_FILE = "testing2";
 	public static final String INPUT_PATH = "files/";
 	public static final String OUTPUT_PATH = "output/";
 	
@@ -58,16 +59,16 @@ public class Main {
 		NonLinearPlannerRegression non_linear_planner = new NonLinearPlannerRegression(operators, initialState, finalState, blocks);
 		non_linear_planner.runPlanner(true);
 		
-		/*
+		
 		//Plot time solution with different maxColumns
-		non_linear_planner.runGraphForColumns();
+		/*non_linear_planner.runGraphForColumns();
 		
 		//Create the output file
 		String text_to_print = non_linear_planner.getTextCorrectPlan();
 		text_to_print = text_to_print + String.format("\n\n\nFirst %d cancelled States",NonLinearPlannerRegression.NUM_CANCELLED_STATES);
 		text_to_print = text_to_print + non_linear_planner.getTextCancelledStates();
-		printOutputFile(text_to_print,OUTPUT_PATH + "Solved_" + INPUT_FILE);
-		*/
+		printOutputFile(text_to_print,OUTPUT_PATH + "Solved_" + INPUT_FILE);*/
+		
 	}
 	
 	/**
@@ -99,7 +100,7 @@ public class Main {
 	 */
 	private static void readInputFile() {
 		//Read input file
-		String filename = INPUT_PATH + INPUT_FILE;
+		String filename = INPUT_PATH + INPUT_FILE + FILE_EXTENSION;
 		BufferedReader br = null;
 		try {
 			br = new BufferedReader(new FileReader(filename));
