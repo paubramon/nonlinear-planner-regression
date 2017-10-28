@@ -1,10 +1,15 @@
 package display;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+
+import org.apache.commons.io.FileUtils;
 
 import elements.PredicateHelper;
 import elements.State;
 import elements.PredicateHelper.PredicateType;
+import main.Main;
 
 public class MultipleStateDisplay {
 	private String[] bestColumns = new String[20];
@@ -14,7 +19,37 @@ public class MultipleStateDisplay {
 		clearBestColumns();
 		free = true;
 	}
+	public static void printStates(State firstState, int totalOperations) {
+		// DISPLAY STATES
+		State displayedState = firstState;
+		MultipleStateDisplay multiDisplay = new MultipleStateDisplay();
+		int jj = 0;
+		String title;
 
+		// Create Folder to store images
+		String directory = "./images/" + Main.INPUT_FILE;
+		try {
+			File dir = new File(directory);
+			dir.mkdir();
+			FileUtils.cleanDirectory(dir);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		while (displayedState != null) {
+			if (jj == 0) {
+				title = "Initial_State";
+			} else if (jj == totalOperations) {
+				title = "Final_State";
+			} else {
+				title = "State_" + Integer.toString(jj);
+			}
+			multiDisplay.printNewState(displayedState, title, directory);
+			displayedState = displayedState.parentState;
+			jj++;
+		}
+	}
 	public void printNewState(State state, String figTitle, String directory) {
 		free = false;
 		// Variables to print the state

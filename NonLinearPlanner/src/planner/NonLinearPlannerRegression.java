@@ -106,36 +106,7 @@ public class NonLinearPlannerRegression {
 
 				System.out.println(String.format("\nFirst %d cancelled States", NUM_CANCELLED_STATES));
 				System.out.println(textCancelledStates);
-				
-				// DISPLAY STATES
-				State displayedState = tempState;
-				MultipleStateDisplay multiDisplay = new MultipleStateDisplay();
-				int jj = 0;
-				String title;
-				
-				//Create Folder to store images
-				String directory = "./images/"+ Main.INPUT_FILE;
-				try {
-					File dir = new File(directory);
-					dir.mkdir();
-					FileUtils.cleanDirectory(dir);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-				while (displayedState != null) {
-					if (jj == 0) {
-						title = "Initial_State";
-					} else if (jj == totalOperations) {
-						title = "Final_State";
-					} else {
-						title = "State_" + Integer.toString(jj);
-					}
-					multiDisplay.printNewState(displayedState, title, directory);
-					displayedState = displayedState.parentState;
-					jj++;
-				}
+				MultipleStateDisplay.printStates(tempState, totalOperations);
 			}
 			return true;
 		} else {
@@ -241,6 +212,10 @@ public class NonLinearPlannerRegression {
 		return 2;
 	}
 
+	/**
+	 * It runs the runPlanner method for the parameters of the input file changing
+	 * the value of the maxColumns number. Then it plots the statistics.
+	 */
 	public void runGraphForColumns() {
 		int number_of_blocks = blocks.size();
 		double[] available_space = new double[number_of_blocks + 1];
