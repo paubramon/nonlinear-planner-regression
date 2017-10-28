@@ -3,7 +3,7 @@ package elements;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import elements.Predicate.PredicateType;
+import elements.PredicateHelper.PredicateType;
 
 /**
  * This class create a generic operator, where all the predicates in preconditions, addlist 
@@ -176,7 +176,7 @@ public class GenericOperator {
 	 */
 	public ArrayList<Operator> findCombinations(ArrayList<Block> blocks, String condition, ArrayList<String> statePredicates){
 		ArrayList<Operator> possibleOperators = new ArrayList<Operator>();
-		PredicateType searchedType = Predicate.findType(condition);
+		PredicateType searchedType = PredicateHelper.findType(condition);
 		
 		/*
 		 * Firstly, we created this method in order to find ALL possible operations that satisfied the given condition (that contained the 
@@ -192,7 +192,7 @@ public class GenericOperator {
 		 */
 		boolean existAdd = false;
 		for(String addCondition : addedConditions) {
-			if(Predicate.findType(addCondition) == searchedType) existAdd = true;
+			if(PredicateHelper.findType(addCondition) == searchedType) existAdd = true;
 		}
 		
 		//If this method add a condition of the same type as input:condition

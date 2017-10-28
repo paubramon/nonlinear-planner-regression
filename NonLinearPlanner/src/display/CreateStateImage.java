@@ -10,9 +10,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
-import elements.Predicate;
+import elements.PredicateHelper;
 import elements.State;
-import elements.Predicate.PredicateType;
+import elements.PredicateHelper.PredicateType;
 
 public class CreateStateImage {
 	public static final int SIZE_Y = 500;
@@ -108,7 +108,7 @@ public class CreateStateImage {
 		} else {
 			int jj = 1;
 			for (String predicate : predicates) {
-				if (Predicate.findType(predicate) == PredicateType.ON_TABLE) {
+				if (PredicateHelper.findType(predicate) == PredicateType.ON_TABLE) {
 					columnLastElement[jj - 1] = predicate.substring(9, 10);
 					columnHeight[jj - 1] = GROUND - BLOCK_HEIGHT;
 					jj++;
@@ -126,7 +126,7 @@ public class CreateStateImage {
 		int jj;
 		while (!predicates.isEmpty()) {
 			String predicate = predicates.get(0);
-			if (Predicate.findType(predicate) == PredicateType.ON) {
+			if (PredicateHelper.findType(predicate) == PredicateType.ON) {
 				String blockname1 = predicate.substring(3, 4);
 				String blockname2 = predicate.substring(5, 6);
 				jj = findElementInColumn(columnLastElement, blockname2);
@@ -139,7 +139,7 @@ public class CreateStateImage {
 					predicates.remove(0);
 					predicates.add(predicate);
 				}
-			} else if (Predicate.findType(predicate) == PredicateType.HOLDING) {
+			} else if (PredicateHelper.findType(predicate) == PredicateType.HOLDING) {
 				String blockname1 = predicate.substring(8, 9);
 				String armname = predicate.substring(10, 11);
 				if (armname.equals("R")) {

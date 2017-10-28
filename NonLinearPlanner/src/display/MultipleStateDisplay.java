@@ -2,9 +2,9 @@ package display;
 
 import java.util.ArrayList;
 
-import elements.Predicate;
+import elements.PredicateHelper;
 import elements.State;
-import elements.Predicate.PredicateType;
+import elements.PredicateHelper.PredicateType;
 
 public class MultipleStateDisplay {
 	private String[] bestColumns = new String[20];
@@ -37,7 +37,7 @@ public class MultipleStateDisplay {
 		// Lets print on table
 		int jj = 1;
 		for (String predicate : predicates) {
-			if (Predicate.findType(predicate) == PredicateType.ON_TABLE) {
+			if (PredicateHelper.findType(predicate) == PredicateType.ON_TABLE) {
 				columnLastElement[jj - 1] = predicate.substring(9, 10);
 				columnHeight[jj - 1] = CreateStateImage.GROUND - CreateStateImage.BLOCK_HEIGHT;
 				jj++;

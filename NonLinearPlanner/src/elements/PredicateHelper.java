@@ -9,9 +9,12 @@ import java.util.regex.Pattern;
  * @author paubr
  *
  */
-public class Predicate {
+public class PredicateHelper {
 	public static enum PredicateType{
 		ON_TABLE, ON, CLEAR, EMPTY_ARM, HOLDING, HEAVIER, LIGHT_BLOCK, USED_COLS_NUM_OK,  USED_COLS_NUM_INC,  USED_COLS_NUM_DEC
+	}
+	private PredicateHelper() {
+		
 	}
 	
 	public static PredicateType findType(String predicate) {

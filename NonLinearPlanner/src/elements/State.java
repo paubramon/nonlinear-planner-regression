@@ -3,7 +3,7 @@ package elements;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-import elements.Predicate.PredicateType;
+import elements.PredicateHelper.PredicateType;
 
 /**
  * This class defines our states.
@@ -16,7 +16,7 @@ public class State {
 	private ArrayList<String> predicates = new ArrayList<String>();
 	private ArrayList<String> usedOperators = new ArrayList<String>();
 	private int availableSpace;
-	public String stateExplanation = "Correct State"; //This will show if the state is correct or the reason why it's not
+	public String stateExplanation = "Correct State"; //This will show if the state is correct or the reason why it's not after using method isStateValid.
 	public State parentState = null;
 	
 	/**
@@ -170,7 +170,7 @@ public class State {
 		String blockname1;
 		String blockname2;
 		String armname;
-		switch(Predicate.findType(predicate)) {
+		switch(PredicateHelper.findType(predicate)) {
 		case CLEAR:
 			blockname1 = predicate.substring(6, 7);
 			if(Pattern.matches(".*ON\\(.," + blockname1 + "\\);.*", predicatesList)) {
@@ -241,7 +241,7 @@ public class State {
 	private int calculateAvailableSpace() {
 		int available_space = maxColumns;
 		for(String predicate : predicates) {
-			if(Predicate.findType(predicate) == PredicateType.ON_TABLE) available_space -= 1;
+			if(PredicateHelper.findType(predicate) == PredicateType.ON_TABLE) available_space -= 1;
 		}
 		return available_space;
 	}
@@ -251,12 +251,12 @@ public class State {
 	 * @param predicate
 	 */
 	private boolean isSpecialPredicate(String predicate) {
-		if((Predicate.findType(predicate) == PredicateType.USED_COLS_NUM_INC) 
-				|| (Predicate.findType(predicate) == PredicateType.USED_COLS_NUM_DEC)
-				|| (Predicate.findType(predicate) == PredicateType.USED_COLS_NUM_OK)
-				|| (Predicate.findType(predicate) == PredicateType.HEAVIER)
-				|| (Predicate.findType(predicate) == PredicateType.LIGHT_BLOCK)
-				|| (Predicate.findType(predicate) == null)) {
+		if((PredicateHelper.findType(predicate) == PredicateType.USED_COLS_NUM_INC) 
+				|| (PredicateHelper.findType(predicate) == PredicateType.USED_COLS_NUM_DEC)
+				|| (PredicateHelper.findType(predicate) == PredicateType.USED_COLS_NUM_OK)
+				|| (PredicateHelper.findType(predicate) == PredicateType.HEAVIER)
+				|| (PredicateHelper.findType(predicate) == PredicateType.LIGHT_BLOCK)
+				|| (PredicateHelper.findType(predicate) == null)) {
 			return true;
 		}else {
 			return false;
