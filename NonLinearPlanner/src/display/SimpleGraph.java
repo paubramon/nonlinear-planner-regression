@@ -21,10 +21,10 @@ import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 public class SimpleGraph extends ApplicationFrame {
 	public JFreeChart xylineChart;
 
-	public SimpleGraph(String applicationTitle, String chartTitle, String xLabel, String yLabel, double[] x1, double[] y1) {
-		super(applicationTitle);
+	public SimpleGraph(String chartTitle, String xLabel, String yLabel, long[] x1, long[] y1) {
+		super("planner_graph");
 		xylineChart = ChartFactory.createXYLineChart(chartTitle, xLabel, yLabel, createDataset(x1, y1),
-				PlotOrientation.VERTICAL, true, true, false);
+				PlotOrientation.VERTICAL, false, true, false);
 
 		final XYPlot plot = xylineChart.getXYPlot();
 
@@ -43,7 +43,7 @@ public class SimpleGraph extends ApplicationFrame {
 
 	}
 
-	private XYDataset createDataset(double[] x, double[] y) {
+	private XYDataset createDataset(long[] x, long[] y) {
 		final XYSeries line1 = new XYSeries("Data");
 
 		int index = 0;
@@ -64,10 +64,10 @@ public class SimpleGraph extends ApplicationFrame {
 		ChartUtilities.saveChartAsJPEG(XYChart, chart.xylineChart, width, height);
 	}
 	
-	public void saveJPEG() throws IOException {
+	public void saveJPEG(String filename) throws IOException {
 		int width = 960; /* Width of the image */
 		int height = 720; /* Height of the image */
-		File XYChart = new File("./images/XYLineChart.jpeg");
+		File XYChart = new File("./images/" + filename + ".jpeg");
 		ChartUtilities.saveChartAsJPEG(XYChart, xylineChart, width, height);
 	}
 	
@@ -83,9 +83,9 @@ public class SimpleGraph extends ApplicationFrame {
 		this.setVisible(true);
 	}
 	
-	/*public static void main(String[] args) throws IOException {
-		double[] ytest = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-		double[] xtest = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+	/* public static void main(String[] args) throws IOException {
+		long[] ytest = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+		long[] xtest = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 		
 		SimpleGraph chart = new SimpleGraph("TestGraph", "StupidTest", "xValues", "yValues", xtest, ytest);
 		displayPlot(chart);

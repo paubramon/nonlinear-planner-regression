@@ -20,14 +20,17 @@ import elements.GenericOperator.OperatorType;
 
 public class Main {
 
-	// Constants for reading the file
+	// Options of the planner
+	public static final String INPUT_FILE = "testing1";
+	public static final boolean FIND_GRAPHS = false; // true -> tries to solve the system with different number of
+													// columns and plots graphs of the results
+	public static final int TYPE_OF_GRAPH = 2; // 0-> Algorithm iterations, 1-> Operations, 2-> Time, 3-> Visited States
+	public static final boolean PRINT_ALL = true; // true -> prints and draws all the results of the planner.
+
+	// Constants
 	public static final String FILE_EXTENSION = ".txt";
-	public static final String INPUT_FILE = "testing2";
 	public static final String INPUT_PATH = "files/";
 	public static final String OUTPUT_PATH = "output/";
-	public static final boolean FIND_GRAPHS = false; // true -> tries to solve the system with different number of
-														// columns and plots graphs of the results
-	public static final boolean PRINT_ALL = true; // true -> prints and draws all the results of the planner.
 
 	// Variables of the planner
 	public static ArrayList<GenericOperator> operators = new ArrayList<GenericOperator>();
@@ -59,9 +62,9 @@ public class Main {
 		}
 
 		runPlanner();
-		
+
 		createOutputFile();
-		
+
 	}
 
 	/**
@@ -69,19 +72,18 @@ public class Main {
 	 */
 	private static void runPlanner() {
 		// Run the planner once
-		nonLinearPlanner = new NonLinearPlannerRegression(operators, initialState,
-				finalState, blocks);
+		nonLinearPlanner = new NonLinearPlannerRegression(operators, initialState, finalState, blocks);
 		nonLinearPlanner.runPlanner(PRINT_ALL);
 
 		// Plot time solution with different maxColumns
 		if (FIND_GRAPHS) {
-			nonLinearPlanner.runGraphForColumns();
+			nonLinearPlanner.runGraphForColumns(TYPE_OF_GRAPH, INPUT_FILE);
 		}
 	}
-	
-	
+
 	/**
-	 * This method creates an output file with the information of the non_linear_planner
+	 * This method creates an output file with the information of the
+	 * non_linear_planner
 	 */
 	private static void createOutputFile() {
 		// Create the output file
@@ -89,7 +91,7 @@ public class Main {
 		text_to_print = text_to_print
 				+ String.format("\n\n\nFirst %d cancelled States", NonLinearPlannerRegression.NUM_CANCELLED_STATES);
 		text_to_print = text_to_print + nonLinearPlanner.getTextCancelledStates();
-		printOutputFile(text_to_print, OUTPUT_PATH + "Solved_" + INPUT_FILE);
+		printOutputFile(text_to_print, OUTPUT_PATH + "Solved_" + INPUT_FILE + FILE_EXTENSION);
 	}
 
 	/**

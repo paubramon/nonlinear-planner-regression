@@ -1,11 +1,10 @@
 package planner;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
-import org.apache.commons.io.FileUtils;
-import org.jfree.io.FileUtilities;
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 import display.MultipleStateDisplay;
 import display.SimpleGraph;
@@ -13,13 +12,14 @@ import elements.Block;
 import elements.GenericOperator;
 import elements.Operator;
 import elements.State;
-import main.Main;
 
 public class NonLinearPlannerRegression {
 
 	public static final int NUM_CANCELLED_STATES = 100;
 	public static final String TEXT_SEPARATOR = "-------------------------------------------\n";
-	public static final int MAX_NUMBER_OF_OPERATORS = 10000;
+	public static final int MAX_NUMBER_OF_OPERATORS = 100000;
+	public static final boolean EXTRA_CONSTRAIN = false;
+	public static final boolean SAVE_GRAPH = true;
 
 	private ArrayList<GenericOperator> operators = new ArrayList<GenericOperator>();
 	private State finalState;
@@ -33,6 +33,8 @@ public class NonLinearPlannerRegression {
 	private String textCorrectPlan = "";
 	private int totalOperations = 0;
 	private int algorithmIterations = 0;
+	private long startTime = 0;
+	private long stopTime = 0;
 
 	public NonLinearPlannerRegression(ArrayList<GenericOperator> operators, State initialState, State finalState,
 			ArrayList<Block> blocks) {
@@ -54,6 +56,8 @@ public class NonLinearPlannerRegression {
 	}
 
 	public boolean runPlanner(boolean printOutput) {
+		startTime = System.currentTimeMillis();
+
 		// Initialization of variables
 		textCancelledStates = "Details of the states that were cancelled:\n"; // Variables for storing text of the
 																				// cancelled states
@@ -85,16 +89,16 @@ public class NonLinearPlannerRegression {
 			stateQueue.remove(0);
 			algorithmIterations++;
 		}
+		stopTime = System.currentTimeMillis();
 		if (solved && !tempState.getUsedOperators().isEmpty()) {
 			totalOperations = tempState.getUsedOperators().size();
-			textCorrectPlan = "Solved!!\n\n";
+			// textCorrectPlan = "Solved!!\n\n";
 			textCorrectPlan = textCorrectPlan + "Number of operators of the plan: " + totalOperations + "\n";
 			textCorrectPlan = textCorrectPlan + "Number of states generated to solve the problem: "
 					+ visitedStates.size() + "\n";
-			textCorrectPlan = textCorrectPlan
-					+ "Total number of correct and incorrect states generated to solve the problem: " + totalNumStates
-					+ "\n";
-			textCorrectPlan = textCorrectPlan + "Plan: " + String.join(",", tempState.getUsedOperators()) + "\n";
+			// textCorrectPlan = textCorrectPlan + "Total number of correct and incorrect
+			// states generated to solve the problem: " + totalNumStates + "\n";
+			textCorrectPlan = textCorrectPlan + "Plan: " + String.join(",", tempState.getUsedOperators());
 
 			if (printOutput) {
 				System.out.println("Solved!!");
@@ -106,7 +110,7 @@ public class NonLinearPlannerRegression {
 
 				System.out.println(String.format("\nFirst %d cancelled States", NUM_CANCELLED_STATES));
 				System.out.println(textCancelledStates);
-				MultipleStateDisplay.printStates(tempState, totalOperations);
+				MultipleStateDisplay.printStates(tempState, totalOperations, blocks);
 			}
 			return true;
 		} else {
@@ -125,8 +129,14 @@ public class NonLinearPlannerRegression {
 	private ArrayList<State> findChilds(State goalState) {
 		ArrayList<State> childs = new ArrayList<State>();
 		ArrayList<String> finalConditions = goalState.getPredicates();
+		ArrayList<String> initialConditions = initialState.getPredicates();
 		ArrayList<Operator> possibleOperators = new ArrayList<Operator>();
 		ArrayList<Operator> validOperators = new ArrayList<Operator>();
+
+		ArrayList<String> common = new ArrayList<String>(finalState.getPredicates());
+		common.retainAll(initialConditions);
+		int similarityGoal = common.size();
+		int similarityNew = 0;
 
 		// This loop searches all the possible operators that could add one of the
 		// conditions in the final state.
@@ -170,8 +180,16 @@ public class NonLinearPlannerRegression {
 			if (stateValid) {
 				// Check if the state has any contradictory predicates
 				if (possibleState.isStateValid()) {
-					childs.add(possibleState);
-					validOperators.add(pOperator);
+					common = new ArrayList<String>(possibleState.getPredicates());
+					common.retainAll(initialConditions);
+					similarityNew = common.size();
+					if (!EXTRA_CONSTRAIN) {
+						childs.add(possibleState);
+						validOperators.add(pOperator);
+					} else if (EXTRA_CONSTRAIN && (similarityNew >= (similarityGoal - 2))) {
+						childs.add(possibleState);
+						validOperators.add(pOperator);
+					}
 				} else if (storedCancelledStates < NUM_CANCELLED_STATES) {
 					storedCancelledStates += 1;
 					textCancelledStates = textCancelledStates + Integer.toString(storedCancelledStates) + "\n";
@@ -216,11 +234,16 @@ public class NonLinearPlannerRegression {
 	 * It runs the runPlanner method for the parameters of the input file changing
 	 * the value of the maxColumns number. Then it plots the statistics.
 	 */
-	public void runGraphForColumns() {
+	public void runGraphForColumns(int type, String filename) {
 		int number_of_blocks = blocks.size();
-		double[] available_space = new double[number_of_blocks + 1];
-		double[] operations = new double[number_of_blocks + 1];
+		long[] available_space = new long[number_of_blocks + 1];
+		long[] operations = new long[number_of_blocks + 1];
 		int first_solvable = 0;
+		String titlegraph = "";
+		String xLabel = "Max number of columns";
+		String yLabel = "";
+		String prefixFile = "";
+		
 		for (int i = 0; i <= number_of_blocks; i++) {
 			if (i < finalState.getUsedSpace()) {
 				// for a final state using more space than the available, the plan is impossible
@@ -235,28 +258,62 @@ public class NonLinearPlannerRegression {
 					if (first_solvable == 0) {
 						first_solvable = i;
 					}
-					// operations[i] = algorithmIterations;
-					operations[i] = totalOperations;
+					if (type == 0) {
+						// Number of iterations
+						titlegraph = "Algorithm iterations vs MaxColumns";
+						yLabel = "Algorithm iterations";
+						operations[i] = algorithmIterations;
+						prefixFile = "iterations";
+					} else if (type == 1) {
+						// Number of operations
+						titlegraph = "Operations vs MaxColumns";
+						yLabel = "Operations";
+						operations[i] = totalOperations;
+						prefixFile = "operations";
+					} else if (type == 2) {
+						// Time
+						titlegraph = "Time vs MaxColumns";
+						yLabel = "Time (ms)";
+						operations[i] = stopTime - startTime;
+						prefixFile = "time";
+					} else if (type == 3) {
+						// Time
+						titlegraph = "Visited states vs MaxColumns";
+						yLabel = "Number of visited states";
+						operations[i] = visitedStates.size();
+						prefixFile = "states";
+					} else {
+						// Number of operations
+						titlegraph = "Operations vs MaxColumns";
+						yLabel = "Operations";
+						operations[i] = totalOperations;
+						prefixFile = "operations";
+					}
 				} else {
 					operations[i] = 0;
 				}
 			}
 		}
 
-		double[] x = new double[number_of_blocks - first_solvable + 1];
-		double[] y = new double[number_of_blocks - first_solvable + 1];
+		long[] x = new long[number_of_blocks - first_solvable + 1];
+		long[] y = new long[number_of_blocks - first_solvable + 1];
 
 		for (int i = 0; i <= number_of_blocks - first_solvable; i++) {
 			x[i] = available_space[i + first_solvable];
 			y[i] = operations[i + first_solvable];
 		}
-
-		SimpleGraph chart = new SimpleGraph("Operations", "Operations vs MaxColumns", "Max number of columns",
-				"Operations of the plan", available_space, operations);
-		chart.displayPlot();
-		SimpleGraph chart2 = new SimpleGraph("Operations", "Operations vs MaxColumns", "Max number of columns",
-				"Operations of the plan", x, y);
+		System.out.println("x axis: " + Arrays.toString(x));
+		System.out.println("y axis: " + Arrays.toString(y));
+		SimpleGraph chart2 = new SimpleGraph(titlegraph, xLabel, yLabel, x, y);
 		chart2.displayPlot();
+		if(SAVE_GRAPH) {
+			try {
+				chart2.saveJPEG(prefixFile + "_" + filename);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 }

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import org.apache.commons.io.FileUtils;
 
+import elements.Block;
 import elements.PredicateHelper;
 import elements.State;
 import elements.PredicateHelper.PredicateType;
@@ -19,7 +20,7 @@ public class MultipleStateDisplay {
 		clearBestColumns();
 		free = true;
 	}
-	public static void printStates(State firstState, int totalOperations) {
+	public static void printStates(State firstState, int totalOperations, ArrayList<Block> blocks) {
 		// DISPLAY STATES
 		State displayedState = firstState;
 		MultipleStateDisplay multiDisplay = new MultipleStateDisplay();
@@ -45,12 +46,12 @@ public class MultipleStateDisplay {
 			} else {
 				title = "State_" + Integer.toString(jj);
 			}
-			multiDisplay.printNewState(displayedState, title, directory);
+			multiDisplay.printNewState(displayedState, title, directory, blocks);
 			displayedState = displayedState.parentState;
 			jj++;
 		}
 	}
-	public void printNewState(State state, String figTitle, String directory) {
+	public void printNewState(State state, String figTitle, String directory, ArrayList<Block> blocks) {
 		free = false;
 		// Variables to print the state
 		String[] columnLastElement = new String[State.maxColumns];
@@ -108,7 +109,7 @@ public class MultipleStateDisplay {
 			this.bestColumns[i - 1] = columnLastElement[i - 1];
 		}
 		
-		CreateStateImage stateImage = new CreateStateImage(state, figTitle, columnLastElement, columnHeight);
+		CreateStateImage stateImage = new CreateStateImage(state, figTitle, columnLastElement, columnHeight, blocks);
 		stateImage.createGrafic(directory);
 	}
 	

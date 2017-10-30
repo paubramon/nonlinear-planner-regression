@@ -1,0 +1,607 @@
+Number of operators of the plan: 14
+Number of states generated to solve the problem: 7422
+Plan: STACK-RIGHT(H,G),PICK-UP-RIGHT(H),STACK-RIGHT(F,A),STACK-LEFT(A,D),UNSTACK-RIGHT(F,D),STACK-RIGHT(G,C),PICK-UP-RIGHT(G),LEAVE-RIGHT(H),UNSTACK-RIGHT(H,G),STACK-RIGHT(C,B),PICK-UP-RIGHT(C),LEAVE-RIGHT(B),UNSTACK-RIGHT(B,C),UNSTACK-LEFT(A,B)
+
+
+First 100 cancelled StatesDetails of the states that were cancelled:
+-------------------------------------------
+1
+Predicates -> HOLDING(B,R),ON(C,B),ON(G,C),ON(H,G),CLEAR(H),ON-TABLE(D),ON(A,D),ON(F,A),CLEAR(F),EMPTY-ARM(L)
+Operators Used -> LEAVE-RIGHT(B)
+Reason for cancelling the exploration -> Contradictory states: if ON(C,B) there must be the predicate ON-TABLE(B) or ON(B,z)
+Contradictory states: if ON(C,B) there must be the predicate ON-TABLE(B) or ON(B,z)
+-------------------------------------------
+2
+Predicates -> HOLDING(B,L),ON(C,B),ON(G,C),ON(H,G),CLEAR(H),ON-TABLE(D),ON(A,D),ON(F,A),CLEAR(F),EMPTY-ARM(R)
+Operators Used -> LEAVE-LEFT(B)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(B,L) is only possible if there is the predicate LIGHT-BLOCK(B)
+Contradictory states: HOLDING(B,L) is only possible if there is the predicate LIGHT-BLOCK(B)
+-------------------------------------------
+3
+Predicates -> HOLDING(C,R),CLEAR(B),ON-TABLE(B),ON(G,C),ON(H,G),CLEAR(H),ON-TABLE(D),ON(A,D),ON(F,A),CLEAR(F),EMPTY-ARM(L)
+Operators Used -> STACK-RIGHT(C,B)
+Reason for cancelling the exploration -> Contradictory states: if ON(G,C) there must be the predicate ON-TABLE(C) or ON(C,z)
+Contradictory states: if ON(G,C) there must be the predicate ON-TABLE(C) or ON(C,z)
+-------------------------------------------
+4
+Predicates -> HOLDING(C,L),CLEAR(B),ON-TABLE(B),ON(G,C),ON(H,G),CLEAR(H),ON-TABLE(D),ON(A,D),ON(F,A),CLEAR(F),EMPTY-ARM(R)
+Operators Used -> STACK-LEFT(C,B)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(C,L) is only possible if there is the predicate LIGHT-BLOCK(C)
+Contradictory states: HOLDING(C,L) is only possible if there is the predicate LIGHT-BLOCK(C)
+-------------------------------------------
+5
+Predicates -> HOLDING(G,R),CLEAR(C),ON-TABLE(B),ON(C,B),ON(H,G),CLEAR(H),ON-TABLE(D),ON(A,D),ON(F,A),CLEAR(F),EMPTY-ARM(L)
+Operators Used -> STACK-RIGHT(G,C)
+Reason for cancelling the exploration -> Contradictory states: if ON(H,G) there must be the predicate ON-TABLE(G) or ON(G,z)
+Contradictory states: if ON(H,G) there must be the predicate ON-TABLE(G) or ON(G,z)
+-------------------------------------------
+6
+Predicates -> HOLDING(G,L),CLEAR(C),ON-TABLE(B),ON(C,B),ON(H,G),CLEAR(H),ON-TABLE(D),ON(A,D),ON(F,A),CLEAR(F),EMPTY-ARM(R)
+Operators Used -> STACK-LEFT(G,C)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(G,L) is only possible if there is the predicate LIGHT-BLOCK(G)
+Contradictory states: HOLDING(G,L) is only possible if there is the predicate LIGHT-BLOCK(G)
+-------------------------------------------
+7
+Predicates -> HOLDING(H,L),CLEAR(G),ON-TABLE(B),ON(C,B),ON(G,C),CLEAR(H),ON-TABLE(D),ON(A,D),ON(F,A),CLEAR(F),EMPTY-ARM(R)
+Operators Used -> STACK-LEFT(H,G)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(H,L) is only possible if there is the predicate LIGHT-BLOCK(H)
+Contradictory states: HOLDING(H,L) is only possible if there is the predicate LIGHT-BLOCK(H)
+-------------------------------------------
+8
+Predicates -> HOLDING(D,R),ON-TABLE(B),ON(C,B),ON(G,C),ON(H,G),CLEAR(H),ON(A,D),ON(F,A),CLEAR(F),EMPTY-ARM(L)
+Operators Used -> LEAVE-RIGHT(D)
+Reason for cancelling the exploration -> Contradictory states: if ON(A,D) there must be the predicate ON-TABLE(D) or ON(D,z)
+Contradictory states: if ON(A,D) there must be the predicate ON-TABLE(D) or ON(D,z)
+-------------------------------------------
+9
+Predicates -> HOLDING(D,L),ON-TABLE(B),ON(C,B),ON(G,C),ON(H,G),CLEAR(H),ON(A,D),ON(F,A),CLEAR(F),EMPTY-ARM(R)
+Operators Used -> LEAVE-LEFT(D)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(D,L) is only possible if there is the predicate LIGHT-BLOCK(D)
+Contradictory states: HOLDING(D,L) is only possible if there is the predicate LIGHT-BLOCK(D)
+-------------------------------------------
+10
+Predicates -> HOLDING(A,R),CLEAR(D),ON-TABLE(B),ON(C,B),ON(G,C),ON(H,G),CLEAR(H),ON-TABLE(D),ON(F,A),CLEAR(F),EMPTY-ARM(L)
+Operators Used -> STACK-RIGHT(A,D)
+Reason for cancelling the exploration -> Contradictory states: if ON(F,A) there must be the predicate ON-TABLE(A) or ON(A,z)
+Contradictory states: if ON(F,A) there must be the predicate ON-TABLE(A) or ON(A,z)
+-------------------------------------------
+11
+Predicates -> HOLDING(A,L),CLEAR(D),ON-TABLE(B),ON(C,B),ON(G,C),ON(H,G),CLEAR(H),ON-TABLE(D),ON(F,A),CLEAR(F),EMPTY-ARM(R)
+Operators Used -> STACK-LEFT(A,D)
+Reason for cancelling the exploration -> Contradictory states: if ON(F,A) there must be the predicate ON-TABLE(A) or ON(A,z)
+Contradictory states: if ON(F,A) there must be the predicate ON-TABLE(A) or ON(A,z)
+-------------------------------------------
+12
+Predicates -> ON(H,F),CLEAR(H),EMPTY-ARM(R),CLEAR(G),ON-TABLE(B),ON(C,B),ON(G,C),ON-TABLE(D),ON(A,D),ON(F,A),EMPTY-ARM(L)
+Operators Used -> STACK-RIGHT(H,G),UNSTACK-RIGHT(H,F)
+Reason for cancelling the exploration -> Contradictory states: if ON(H,F) there must be the predicate HEAVIER(F,H)
+Contradictory states: if ON(H,F) there must be the predicate HEAVIER(F,H)
+-------------------------------------------
+13
+Predicates -> HOLDING(B,L),HOLDING(H,R),CLEAR(G),ON(C,B),ON(G,C),CLEAR(H),ON-TABLE(D),ON(A,D),ON(F,A),CLEAR(F)
+Operators Used -> STACK-RIGHT(H,G),LEAVE-LEFT(B)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(B,L) is only possible if there is the predicate LIGHT-BLOCK(B)
+Contradictory states: HOLDING(B,L) is only possible if there is the predicate LIGHT-BLOCK(B)
+-------------------------------------------
+14
+Predicates -> HOLDING(C,L),CLEAR(B),HOLDING(H,R),CLEAR(G),ON-TABLE(B),ON(G,C),CLEAR(H),ON-TABLE(D),ON(A,D),ON(F,A),CLEAR(F)
+Operators Used -> STACK-RIGHT(H,G),STACK-LEFT(C,B)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(C,L) is only possible if there is the predicate LIGHT-BLOCK(C)
+Contradictory states: HOLDING(C,L) is only possible if there is the predicate LIGHT-BLOCK(C)
+-------------------------------------------
+15
+Predicates -> HOLDING(G,L),CLEAR(C),HOLDING(H,R),CLEAR(G),ON-TABLE(B),ON(C,B),CLEAR(H),ON-TABLE(D),ON(A,D),ON(F,A),CLEAR(F)
+Operators Used -> STACK-RIGHT(H,G),STACK-LEFT(G,C)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(G,L) is only possible if there is the predicate LIGHT-BLOCK(G)
+Contradictory states: HOLDING(G,L) is only possible if there is the predicate LIGHT-BLOCK(G)
+-------------------------------------------
+16
+Predicates -> HOLDING(D,L),HOLDING(H,R),CLEAR(G),ON-TABLE(B),ON(C,B),ON(G,C),CLEAR(H),ON(A,D),ON(F,A),CLEAR(F)
+Operators Used -> STACK-RIGHT(H,G),LEAVE-LEFT(D)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(D,L) is only possible if there is the predicate LIGHT-BLOCK(D)
+Contradictory states: HOLDING(D,L) is only possible if there is the predicate LIGHT-BLOCK(D)
+-------------------------------------------
+17
+Predicates -> HOLDING(A,L),CLEAR(D),HOLDING(H,R),CLEAR(G),ON-TABLE(B),ON(C,B),ON(G,C),CLEAR(H),ON-TABLE(D),ON(F,A),CLEAR(F)
+Operators Used -> STACK-RIGHT(H,G),STACK-LEFT(A,D)
+Reason for cancelling the exploration -> Contradictory states: if ON(F,A) there must be the predicate ON-TABLE(A) or ON(A,z)
+Contradictory states: if ON(F,A) there must be the predicate ON-TABLE(A) or ON(A,z)
+-------------------------------------------
+18
+Predicates -> HOLDING(B,L),HOLDING(F,R),CLEAR(A),ON(C,B),ON(G,C),ON(H,G),CLEAR(H),ON-TABLE(D),ON(A,D),CLEAR(F)
+Operators Used -> STACK-RIGHT(F,A),LEAVE-LEFT(B)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(B,L) is only possible if there is the predicate LIGHT-BLOCK(B)
+Contradictory states: HOLDING(B,L) is only possible if there is the predicate LIGHT-BLOCK(B)
+-------------------------------------------
+19
+Predicates -> HOLDING(C,L),CLEAR(B),HOLDING(F,R),CLEAR(A),ON-TABLE(B),ON(G,C),ON(H,G),CLEAR(H),ON-TABLE(D),ON(A,D),CLEAR(F)
+Operators Used -> STACK-RIGHT(F,A),STACK-LEFT(C,B)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(C,L) is only possible if there is the predicate LIGHT-BLOCK(C)
+Contradictory states: HOLDING(C,L) is only possible if there is the predicate LIGHT-BLOCK(C)
+-------------------------------------------
+20
+Predicates -> HOLDING(G,L),CLEAR(C),HOLDING(F,R),CLEAR(A),ON-TABLE(B),ON(C,B),ON(H,G),CLEAR(H),ON-TABLE(D),ON(A,D),CLEAR(F)
+Operators Used -> STACK-RIGHT(F,A),STACK-LEFT(G,C)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(G,L) is only possible if there is the predicate LIGHT-BLOCK(G)
+Contradictory states: HOLDING(G,L) is only possible if there is the predicate LIGHT-BLOCK(G)
+-------------------------------------------
+21
+Predicates -> HOLDING(H,L),CLEAR(G),HOLDING(F,R),CLEAR(A),ON-TABLE(B),ON(C,B),ON(G,C),CLEAR(H),ON-TABLE(D),ON(A,D),CLEAR(F)
+Operators Used -> STACK-RIGHT(F,A),STACK-LEFT(H,G)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(H,L) is only possible if there is the predicate LIGHT-BLOCK(H)
+Contradictory states: HOLDING(H,L) is only possible if there is the predicate LIGHT-BLOCK(H)
+-------------------------------------------
+22
+Predicates -> HOLDING(D,L),HOLDING(F,R),CLEAR(A),ON-TABLE(B),ON(C,B),ON(G,C),ON(H,G),CLEAR(H),ON(A,D),CLEAR(F)
+Operators Used -> STACK-RIGHT(F,A),LEAVE-LEFT(D)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(D,L) is only possible if there is the predicate LIGHT-BLOCK(D)
+Contradictory states: HOLDING(D,L) is only possible if there is the predicate LIGHT-BLOCK(D)
+-------------------------------------------
+23
+Predicates -> HOLDING(B,R),HOLDING(F,L),CLEAR(A),ON(C,B),ON(G,C),ON(H,G),CLEAR(H),ON-TABLE(D),ON(A,D),CLEAR(F)
+Operators Used -> STACK-LEFT(F,A),LEAVE-RIGHT(B)
+Reason for cancelling the exploration -> Contradictory states: if ON(C,B) there must be the predicate ON-TABLE(B) or ON(B,z)
+Contradictory states: if ON(C,B) there must be the predicate ON-TABLE(B) or ON(B,z)
+-------------------------------------------
+24
+Predicates -> HOLDING(C,R),CLEAR(B),HOLDING(F,L),CLEAR(A),ON-TABLE(B),ON(G,C),ON(H,G),CLEAR(H),ON-TABLE(D),ON(A,D),CLEAR(F)
+Operators Used -> STACK-LEFT(F,A),STACK-RIGHT(C,B)
+Reason for cancelling the exploration -> Contradictory states: if ON(G,C) there must be the predicate ON-TABLE(C) or ON(C,z)
+Contradictory states: if ON(G,C) there must be the predicate ON-TABLE(C) or ON(C,z)
+-------------------------------------------
+25
+Predicates -> HOLDING(G,R),CLEAR(C),HOLDING(F,L),CLEAR(A),ON-TABLE(B),ON(C,B),ON(H,G),CLEAR(H),ON-TABLE(D),ON(A,D),CLEAR(F)
+Operators Used -> STACK-LEFT(F,A),STACK-RIGHT(G,C)
+Reason for cancelling the exploration -> Contradictory states: if ON(H,G) there must be the predicate ON-TABLE(G) or ON(G,z)
+Contradictory states: if ON(H,G) there must be the predicate ON-TABLE(G) or ON(G,z)
+-------------------------------------------
+26
+Predicates -> HOLDING(D,R),HOLDING(F,L),CLEAR(A),ON-TABLE(B),ON(C,B),ON(G,C),ON(H,G),CLEAR(H),ON(A,D),CLEAR(F)
+Operators Used -> STACK-LEFT(F,A),LEAVE-RIGHT(D)
+Reason for cancelling the exploration -> Contradictory states: if ON(A,D) there must be the predicate ON-TABLE(D) or ON(D,z)
+Contradictory states: if ON(A,D) there must be the predicate ON-TABLE(D) or ON(D,z)
+-------------------------------------------
+27
+Predicates -> HOLDING(H,L),CLEAR(H),EMPTY-ARM(R),CLEAR(G),ON-TABLE(B),ON(C,B),ON(G,C),ON-TABLE(D),ON(A,D),ON(F,A),CLEAR(F)
+Operators Used -> STACK-RIGHT(H,G),PICK-UP-RIGHT(H),LEAVE-LEFT(H)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(H,L) is only possible if there is the predicate LIGHT-BLOCK(H)
+Contradictory states: HOLDING(H,L) is only possible if there is the predicate LIGHT-BLOCK(H)
+-------------------------------------------
+28
+Predicates -> HOLDING(B,R),ON-TABLE(H),CLEAR(H),CLEAR(G),ON(C,B),ON(G,C),ON-TABLE(D),ON(A,D),ON(F,A),CLEAR(F),EMPTY-ARM(L)
+Operators Used -> STACK-RIGHT(H,G),PICK-UP-RIGHT(H),LEAVE-RIGHT(B)
+Reason for cancelling the exploration -> Contradictory states: if ON(C,B) there must be the predicate ON-TABLE(B) or ON(B,z)
+Contradictory states: if ON(C,B) there must be the predicate ON-TABLE(B) or ON(B,z)
+-------------------------------------------
+29
+Predicates -> HOLDING(D,R),ON-TABLE(H),CLEAR(H),CLEAR(G),ON-TABLE(B),ON(C,B),ON(G,C),ON(A,D),ON(F,A),CLEAR(F),EMPTY-ARM(L)
+Operators Used -> STACK-RIGHT(H,G),PICK-UP-RIGHT(H),LEAVE-RIGHT(D)
+Reason for cancelling the exploration -> Contradictory states: if ON(A,D) there must be the predicate ON-TABLE(D) or ON(D,z)
+Contradictory states: if ON(A,D) there must be the predicate ON-TABLE(D) or ON(D,z)
+-------------------------------------------
+30
+Predicates -> HOLDING(A,R),CLEAR(D),ON-TABLE(H),CLEAR(H),CLEAR(G),ON-TABLE(B),ON(C,B),ON(G,C),ON-TABLE(D),ON(F,A),CLEAR(F),EMPTY-ARM(L)
+Operators Used -> STACK-RIGHT(H,G),PICK-UP-RIGHT(H),STACK-RIGHT(A,D)
+Reason for cancelling the exploration -> Contradictory states: if ON(F,A) there must be the predicate ON-TABLE(A) or ON(A,z)
+Contradictory states: if ON(F,A) there must be the predicate ON-TABLE(A) or ON(A,z)
+-------------------------------------------
+31
+Predicates -> HOLDING(C,R),CLEAR(B),ON-TABLE(H),CLEAR(H),CLEAR(G),ON-TABLE(B),ON(G,C),ON-TABLE(D),ON(A,D),ON(F,A),CLEAR(F),EMPTY-ARM(L)
+Operators Used -> STACK-RIGHT(H,G),PICK-UP-RIGHT(H),STACK-RIGHT(C,B)
+Reason for cancelling the exploration -> Contradictory states: if ON(G,C) there must be the predicate ON-TABLE(C) or ON(C,z)
+Contradictory states: if ON(G,C) there must be the predicate ON-TABLE(C) or ON(C,z)
+-------------------------------------------
+32
+Predicates -> HOLDING(B,L),ON-TABLE(H),CLEAR(H),EMPTY-ARM(R),CLEAR(G),ON(C,B),ON(G,C),ON-TABLE(D),ON(A,D),ON(F,A),CLEAR(F)
+Operators Used -> STACK-RIGHT(H,G),PICK-UP-RIGHT(H),LEAVE-LEFT(B)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(B,L) is only possible if there is the predicate LIGHT-BLOCK(B)
+Contradictory states: HOLDING(B,L) is only possible if there is the predicate LIGHT-BLOCK(B)
+-------------------------------------------
+33
+Predicates -> HOLDING(C,L),CLEAR(B),ON-TABLE(H),CLEAR(H),EMPTY-ARM(R),CLEAR(G),ON-TABLE(B),ON(G,C),ON-TABLE(D),ON(A,D),ON(F,A),CLEAR(F)
+Operators Used -> STACK-RIGHT(H,G),PICK-UP-RIGHT(H),STACK-LEFT(C,B)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(C,L) is only possible if there is the predicate LIGHT-BLOCK(C)
+Contradictory states: HOLDING(C,L) is only possible if there is the predicate LIGHT-BLOCK(C)
+-------------------------------------------
+34
+Predicates -> HOLDING(G,L),CLEAR(C),ON-TABLE(H),CLEAR(H),EMPTY-ARM(R),CLEAR(G),ON-TABLE(B),ON(C,B),ON-TABLE(D),ON(A,D),ON(F,A),CLEAR(F)
+Operators Used -> STACK-RIGHT(H,G),PICK-UP-RIGHT(H),STACK-LEFT(G,C)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(G,L) is only possible if there is the predicate LIGHT-BLOCK(G)
+Contradictory states: HOLDING(G,L) is only possible if there is the predicate LIGHT-BLOCK(G)
+-------------------------------------------
+35
+Predicates -> HOLDING(D,L),ON-TABLE(H),CLEAR(H),EMPTY-ARM(R),CLEAR(G),ON-TABLE(B),ON(C,B),ON(G,C),ON(A,D),ON(F,A),CLEAR(F)
+Operators Used -> STACK-RIGHT(H,G),PICK-UP-RIGHT(H),LEAVE-LEFT(D)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(D,L) is only possible if there is the predicate LIGHT-BLOCK(D)
+Contradictory states: HOLDING(D,L) is only possible if there is the predicate LIGHT-BLOCK(D)
+-------------------------------------------
+36
+Predicates -> HOLDING(A,L),CLEAR(D),ON-TABLE(H),CLEAR(H),EMPTY-ARM(R),CLEAR(G),ON-TABLE(B),ON(C,B),ON(G,C),ON-TABLE(D),ON(F,A),CLEAR(F)
+Operators Used -> STACK-RIGHT(H,G),PICK-UP-RIGHT(H),STACK-LEFT(A,D)
+Reason for cancelling the exploration -> Contradictory states: if ON(F,A) there must be the predicate ON-TABLE(A) or ON(A,z)
+Contradictory states: if ON(F,A) there must be the predicate ON-TABLE(A) or ON(A,z)
+-------------------------------------------
+37
+Predicates -> ON(F,H),CLEAR(F),EMPTY-ARM(L),CLEAR(A),HOLDING(H,R),CLEAR(G),ON-TABLE(B),ON(C,B),ON(G,C),ON-TABLE(D),ON(A,D)
+Operators Used -> STACK-RIGHT(H,G),STACK-LEFT(F,A),UNSTACK-LEFT(F,H)
+Reason for cancelling the exploration -> Contradictory states: if ON(F,H) there must be the predicate ON-TABLE(H) or ON(H,z)
+Contradictory states: if ON(F,H) there must be the predicate ON-TABLE(H) or ON(H,z)
+-------------------------------------------
+38
+Predicates -> ON(H,A),CLEAR(H),EMPTY-ARM(R),HOLDING(F,L),CLEAR(G),ON-TABLE(B),ON(C,B),ON(G,C),ON-TABLE(D),ON(A,D),CLEAR(F)
+Operators Used -> STACK-RIGHT(H,G),STACK-LEFT(F,A),UNSTACK-RIGHT(H,A)
+Reason for cancelling the exploration -> Contradictory states: if ON(H,A) there must be the predicate HEAVIER(A,H)
+Contradictory states: if ON(H,A) there must be the predicate HEAVIER(A,H)
+-------------------------------------------
+39
+Predicates -> ON(H,F),CLEAR(H),EMPTY-ARM(R),HOLDING(F,L),CLEAR(A),CLEAR(G),ON-TABLE(B),ON(C,B),ON(G,C),ON-TABLE(D),ON(A,D)
+Operators Used -> STACK-RIGHT(H,G),STACK-LEFT(F,A),UNSTACK-RIGHT(H,F)
+Reason for cancelling the exploration -> Contradictory states: if ON(H,F) there must be the predicate HEAVIER(F,H)
+Contradictory states: if ON(H,F) there must be the predicate HEAVIER(F,H)
+-------------------------------------------
+40
+Predicates -> HOLDING(B,R),ON-TABLE(F),CLEAR(F),CLEAR(A),ON(C,B),ON(G,C),ON(H,G),CLEAR(H),ON-TABLE(D),ON(A,D),EMPTY-ARM(L)
+Operators Used -> STACK-RIGHT(F,A),PICK-UP-RIGHT(F),LEAVE-RIGHT(B)
+Reason for cancelling the exploration -> Contradictory states: if ON(C,B) there must be the predicate ON-TABLE(B) or ON(B,z)
+Contradictory states: if ON(C,B) there must be the predicate ON-TABLE(B) or ON(B,z)
+-------------------------------------------
+41
+Predicates -> HOLDING(D,R),ON-TABLE(F),CLEAR(F),CLEAR(A),ON-TABLE(B),ON(C,B),ON(G,C),ON(H,G),CLEAR(H),ON(A,D),EMPTY-ARM(L)
+Operators Used -> STACK-RIGHT(F,A),PICK-UP-RIGHT(F),LEAVE-RIGHT(D)
+Reason for cancelling the exploration -> Contradictory states: if ON(A,D) there must be the predicate ON-TABLE(D) or ON(D,z)
+Contradictory states: if ON(A,D) there must be the predicate ON-TABLE(D) or ON(D,z)
+-------------------------------------------
+42
+Predicates -> HOLDING(C,R),CLEAR(B),ON-TABLE(F),CLEAR(F),CLEAR(A),ON-TABLE(B),ON(G,C),ON(H,G),CLEAR(H),ON-TABLE(D),ON(A,D),EMPTY-ARM(L)
+Operators Used -> STACK-RIGHT(F,A),PICK-UP-RIGHT(F),STACK-RIGHT(C,B)
+Reason for cancelling the exploration -> Contradictory states: if ON(G,C) there must be the predicate ON-TABLE(C) or ON(C,z)
+Contradictory states: if ON(G,C) there must be the predicate ON-TABLE(C) or ON(C,z)
+-------------------------------------------
+43
+Predicates -> HOLDING(G,R),CLEAR(C),ON-TABLE(F),CLEAR(F),CLEAR(A),ON-TABLE(B),ON(C,B),ON(H,G),CLEAR(H),ON-TABLE(D),ON(A,D),EMPTY-ARM(L)
+Operators Used -> STACK-RIGHT(F,A),PICK-UP-RIGHT(F),STACK-RIGHT(G,C)
+Reason for cancelling the exploration -> Contradictory states: if ON(H,G) there must be the predicate ON-TABLE(G) or ON(G,z)
+Contradictory states: if ON(H,G) there must be the predicate ON-TABLE(G) or ON(G,z)
+-------------------------------------------
+44
+Predicates -> HOLDING(B,L),ON-TABLE(F),CLEAR(F),EMPTY-ARM(R),CLEAR(A),ON(C,B),ON(G,C),ON(H,G),CLEAR(H),ON-TABLE(D),ON(A,D)
+Operators Used -> STACK-RIGHT(F,A),PICK-UP-RIGHT(F),LEAVE-LEFT(B)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(B,L) is only possible if there is the predicate LIGHT-BLOCK(B)
+Contradictory states: HOLDING(B,L) is only possible if there is the predicate LIGHT-BLOCK(B)
+-------------------------------------------
+45
+Predicates -> HOLDING(C,L),CLEAR(B),ON-TABLE(F),CLEAR(F),EMPTY-ARM(R),CLEAR(A),ON-TABLE(B),ON(G,C),ON(H,G),CLEAR(H),ON-TABLE(D),ON(A,D)
+Operators Used -> STACK-RIGHT(F,A),PICK-UP-RIGHT(F),STACK-LEFT(C,B)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(C,L) is only possible if there is the predicate LIGHT-BLOCK(C)
+Contradictory states: HOLDING(C,L) is only possible if there is the predicate LIGHT-BLOCK(C)
+-------------------------------------------
+46
+Predicates -> HOLDING(G,L),CLEAR(C),ON-TABLE(F),CLEAR(F),EMPTY-ARM(R),CLEAR(A),ON-TABLE(B),ON(C,B),ON(H,G),CLEAR(H),ON-TABLE(D),ON(A,D)
+Operators Used -> STACK-RIGHT(F,A),PICK-UP-RIGHT(F),STACK-LEFT(G,C)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(G,L) is only possible if there is the predicate LIGHT-BLOCK(G)
+Contradictory states: HOLDING(G,L) is only possible if there is the predicate LIGHT-BLOCK(G)
+-------------------------------------------
+47
+Predicates -> HOLDING(H,L),CLEAR(G),ON-TABLE(F),CLEAR(F),EMPTY-ARM(R),CLEAR(A),ON-TABLE(B),ON(C,B),ON(G,C),CLEAR(H),ON-TABLE(D),ON(A,D)
+Operators Used -> STACK-RIGHT(F,A),PICK-UP-RIGHT(F),STACK-LEFT(H,G)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(H,L) is only possible if there is the predicate LIGHT-BLOCK(H)
+Contradictory states: HOLDING(H,L) is only possible if there is the predicate LIGHT-BLOCK(H)
+-------------------------------------------
+48
+Predicates -> HOLDING(D,L),ON-TABLE(F),CLEAR(F),EMPTY-ARM(R),CLEAR(A),ON-TABLE(B),ON(C,B),ON(G,C),ON(H,G),CLEAR(H),ON(A,D)
+Operators Used -> STACK-RIGHT(F,A),PICK-UP-RIGHT(F),LEAVE-LEFT(D)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(D,L) is only possible if there is the predicate LIGHT-BLOCK(D)
+Contradictory states: HOLDING(D,L) is only possible if there is the predicate LIGHT-BLOCK(D)
+-------------------------------------------
+49
+Predicates -> HOLDING(B,R),ON(F,H),CLEAR(F),CLEAR(A),ON(C,B),ON(G,C),ON(H,G),ON-TABLE(D),ON(A,D),EMPTY-ARM(L)
+Operators Used -> STACK-RIGHT(F,A),UNSTACK-RIGHT(F,H),LEAVE-RIGHT(B)
+Reason for cancelling the exploration -> Contradictory states: if ON(C,B) there must be the predicate ON-TABLE(B) or ON(B,z)
+Contradictory states: if ON(C,B) there must be the predicate ON-TABLE(B) or ON(B,z)
+-------------------------------------------
+50
+Predicates -> HOLDING(D,R),ON(F,H),CLEAR(F),CLEAR(A),ON-TABLE(B),ON(C,B),ON(G,C),ON(H,G),ON(A,D),EMPTY-ARM(L)
+Operators Used -> STACK-RIGHT(F,A),UNSTACK-RIGHT(F,H),LEAVE-RIGHT(D)
+Reason for cancelling the exploration -> Contradictory states: if ON(A,D) there must be the predicate ON-TABLE(D) or ON(D,z)
+Contradictory states: if ON(A,D) there must be the predicate ON-TABLE(D) or ON(D,z)
+-------------------------------------------
+51
+Predicates -> HOLDING(C,R),CLEAR(B),ON(F,H),CLEAR(F),CLEAR(A),ON-TABLE(B),ON(G,C),ON(H,G),ON-TABLE(D),ON(A,D),EMPTY-ARM(L)
+Operators Used -> STACK-RIGHT(F,A),UNSTACK-RIGHT(F,H),STACK-RIGHT(C,B)
+Reason for cancelling the exploration -> Contradictory states: if ON(G,C) there must be the predicate ON-TABLE(C) or ON(C,z)
+Contradictory states: if ON(G,C) there must be the predicate ON-TABLE(C) or ON(C,z)
+-------------------------------------------
+52
+Predicates -> HOLDING(G,R),CLEAR(C),ON(F,H),CLEAR(F),CLEAR(A),ON-TABLE(B),ON(C,B),ON(H,G),ON-TABLE(D),ON(A,D),EMPTY-ARM(L)
+Operators Used -> STACK-RIGHT(F,A),UNSTACK-RIGHT(F,H),STACK-RIGHT(G,C)
+Reason for cancelling the exploration -> Contradictory states: if ON(H,G) there must be the predicate ON-TABLE(G) or ON(G,z)
+Contradictory states: if ON(H,G) there must be the predicate ON-TABLE(G) or ON(G,z)
+-------------------------------------------
+53
+Predicates -> HOLDING(H,R),CLEAR(G),ON(F,H),CLEAR(F),CLEAR(A),ON-TABLE(B),ON(C,B),ON(G,C),ON-TABLE(D),ON(A,D),EMPTY-ARM(L)
+Operators Used -> STACK-RIGHT(F,A),UNSTACK-RIGHT(F,H),STACK-RIGHT(H,G)
+Reason for cancelling the exploration -> Contradictory states: if ON(F,H) there must be the predicate ON-TABLE(H) or ON(H,z)
+Contradictory states: if ON(F,H) there must be the predicate ON-TABLE(H) or ON(H,z)
+-------------------------------------------
+54
+Predicates -> HOLDING(B,L),ON(F,H),CLEAR(F),EMPTY-ARM(R),CLEAR(A),ON(C,B),ON(G,C),ON(H,G),ON-TABLE(D),ON(A,D)
+Operators Used -> STACK-RIGHT(F,A),UNSTACK-RIGHT(F,H),LEAVE-LEFT(B)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(B,L) is only possible if there is the predicate LIGHT-BLOCK(B)
+Contradictory states: HOLDING(B,L) is only possible if there is the predicate LIGHT-BLOCK(B)
+-------------------------------------------
+55
+Predicates -> HOLDING(C,L),CLEAR(B),ON(F,H),CLEAR(F),EMPTY-ARM(R),CLEAR(A),ON-TABLE(B),ON(G,C),ON(H,G),ON-TABLE(D),ON(A,D)
+Operators Used -> STACK-RIGHT(F,A),UNSTACK-RIGHT(F,H),STACK-LEFT(C,B)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(C,L) is only possible if there is the predicate LIGHT-BLOCK(C)
+Contradictory states: HOLDING(C,L) is only possible if there is the predicate LIGHT-BLOCK(C)
+-------------------------------------------
+56
+Predicates -> HOLDING(G,L),CLEAR(C),ON(F,H),CLEAR(F),EMPTY-ARM(R),CLEAR(A),ON-TABLE(B),ON(C,B),ON(H,G),ON-TABLE(D),ON(A,D)
+Operators Used -> STACK-RIGHT(F,A),UNSTACK-RIGHT(F,H),STACK-LEFT(G,C)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(G,L) is only possible if there is the predicate LIGHT-BLOCK(G)
+Contradictory states: HOLDING(G,L) is only possible if there is the predicate LIGHT-BLOCK(G)
+-------------------------------------------
+57
+Predicates -> HOLDING(H,L),CLEAR(G),ON(F,H),CLEAR(F),EMPTY-ARM(R),CLEAR(A),ON-TABLE(B),ON(C,B),ON(G,C),ON-TABLE(D),ON(A,D)
+Operators Used -> STACK-RIGHT(F,A),UNSTACK-RIGHT(F,H),STACK-LEFT(H,G)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(H,L) is only possible if there is the predicate LIGHT-BLOCK(H)
+Contradictory states: HOLDING(H,L) is only possible if there is the predicate LIGHT-BLOCK(H)
+-------------------------------------------
+58
+Predicates -> HOLDING(D,L),ON(F,H),CLEAR(F),EMPTY-ARM(R),CLEAR(A),ON-TABLE(B),ON(C,B),ON(G,C),ON(H,G),ON(A,D)
+Operators Used -> STACK-RIGHT(F,A),UNSTACK-RIGHT(F,H),LEAVE-LEFT(D)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(D,L) is only possible if there is the predicate LIGHT-BLOCK(D)
+Contradictory states: HOLDING(D,L) is only possible if there is the predicate LIGHT-BLOCK(D)
+-------------------------------------------
+59
+Predicates -> ON(A,F),CLEAR(A),EMPTY-ARM(L),CLEAR(D),HOLDING(F,R),ON-TABLE(B),ON(C,B),ON(G,C),ON(H,G),CLEAR(H),ON-TABLE(D)
+Operators Used -> STACK-RIGHT(F,A),STACK-LEFT(A,D),UNSTACK-LEFT(A,F)
+Reason for cancelling the exploration -> Contradictory states: if ON(A,F) there must be the predicate ON-TABLE(F) or ON(F,z)
+Contradictory states: if ON(A,F) there must be the predicate ON-TABLE(F) or ON(F,z)
+-------------------------------------------
+60
+Predicates -> ON(F,A),CLEAR(F),EMPTY-ARM(R),HOLDING(A,L),CLEAR(D),ON-TABLE(B),ON(C,B),ON(G,C),ON(H,G),CLEAR(H),ON-TABLE(D)
+Operators Used -> STACK-RIGHT(F,A),STACK-LEFT(A,D),UNSTACK-RIGHT(F,A)
+Reason for cancelling the exploration -> Contradictory states: if ON(F,A) there must be the predicate ON-TABLE(A) or ON(A,z)
+Contradictory states: if ON(F,A) there must be the predicate ON-TABLE(A) or ON(A,z)
+-------------------------------------------
+61
+Predicates -> ON(A,F),CLEAR(A),EMPTY-ARM(R),CLEAR(D),HOLDING(F,L),ON-TABLE(B),ON(C,B),ON(G,C),ON(H,G),CLEAR(H),ON-TABLE(D)
+Operators Used -> STACK-LEFT(F,A),STACK-RIGHT(A,D),UNSTACK-RIGHT(A,F)
+Reason for cancelling the exploration -> Contradictory states: if ON(A,F) there must be the predicate ON-TABLE(F) or ON(F,z)
+Contradictory states: if ON(A,F) there must be the predicate ON-TABLE(F) or ON(F,z)
+-------------------------------------------
+62
+Predicates -> ON(F,A),CLEAR(F),EMPTY-ARM(L),HOLDING(A,R),CLEAR(D),ON-TABLE(B),ON(C,B),ON(G,C),ON(H,G),CLEAR(H),ON-TABLE(D)
+Operators Used -> STACK-LEFT(F,A),STACK-RIGHT(A,D),UNSTACK-LEFT(F,A)
+Reason for cancelling the exploration -> Contradictory states: if ON(F,A) there must be the predicate ON-TABLE(A) or ON(A,z)
+Contradictory states: if ON(F,A) there must be the predicate ON-TABLE(A) or ON(A,z)
+-------------------------------------------
+63
+Predicates -> HOLDING(H,L),HOLDING(F,R),CLEAR(A),CLEAR(H),CLEAR(G),ON-TABLE(B),ON(C,B),ON(G,C),ON-TABLE(D),ON(A,D),CLEAR(F)
+Operators Used -> STACK-RIGHT(H,G),PICK-UP-RIGHT(H),STACK-RIGHT(F,A),LEAVE-LEFT(H)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(H,L) is only possible if there is the predicate LIGHT-BLOCK(H)
+Contradictory states: HOLDING(H,L) is only possible if there is the predicate LIGHT-BLOCK(H)
+-------------------------------------------
+64
+Predicates -> HOLDING(B,L),HOLDING(F,R),CLEAR(A),ON-TABLE(H),CLEAR(H),CLEAR(G),ON(C,B),ON(G,C),ON-TABLE(D),ON(A,D),CLEAR(F)
+Operators Used -> STACK-RIGHT(H,G),PICK-UP-RIGHT(H),STACK-RIGHT(F,A),LEAVE-LEFT(B)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(B,L) is only possible if there is the predicate LIGHT-BLOCK(B)
+Contradictory states: HOLDING(B,L) is only possible if there is the predicate LIGHT-BLOCK(B)
+-------------------------------------------
+65
+Predicates -> HOLDING(C,L),CLEAR(B),HOLDING(F,R),CLEAR(A),ON-TABLE(H),CLEAR(H),CLEAR(G),ON-TABLE(B),ON(G,C),ON-TABLE(D),ON(A,D),CLEAR(F)
+Operators Used -> STACK-RIGHT(H,G),PICK-UP-RIGHT(H),STACK-RIGHT(F,A),STACK-LEFT(C,B)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(C,L) is only possible if there is the predicate LIGHT-BLOCK(C)
+Contradictory states: HOLDING(C,L) is only possible if there is the predicate LIGHT-BLOCK(C)
+-------------------------------------------
+66
+Predicates -> HOLDING(G,L),CLEAR(C),HOLDING(F,R),CLEAR(A),ON-TABLE(H),CLEAR(H),CLEAR(G),ON-TABLE(B),ON(C,B),ON-TABLE(D),ON(A,D),CLEAR(F)
+Operators Used -> STACK-RIGHT(H,G),PICK-UP-RIGHT(H),STACK-RIGHT(F,A),STACK-LEFT(G,C)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(G,L) is only possible if there is the predicate LIGHT-BLOCK(G)
+Contradictory states: HOLDING(G,L) is only possible if there is the predicate LIGHT-BLOCK(G)
+-------------------------------------------
+67
+Predicates -> HOLDING(D,L),HOLDING(F,R),CLEAR(A),ON-TABLE(H),CLEAR(H),CLEAR(G),ON-TABLE(B),ON(C,B),ON(G,C),ON(A,D),CLEAR(F)
+Operators Used -> STACK-RIGHT(H,G),PICK-UP-RIGHT(H),STACK-RIGHT(F,A),LEAVE-LEFT(D)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(D,L) is only possible if there is the predicate LIGHT-BLOCK(D)
+Contradictory states: HOLDING(D,L) is only possible if there is the predicate LIGHT-BLOCK(D)
+-------------------------------------------
+68
+Predicates -> ON(G,F),CLEAR(G),EMPTY-ARM(R),CLEAR(C),ON-TABLE(H),CLEAR(H),ON-TABLE(B),ON(C,B),ON-TABLE(D),ON(A,D),ON(F,A),EMPTY-ARM(L)
+Operators Used -> STACK-RIGHT(H,G),PICK-UP-RIGHT(H),STACK-RIGHT(G,C),UNSTACK-RIGHT(G,F)
+Reason for cancelling the exploration -> Contradictory states: if ON(G,F) there must be the predicate HEAVIER(F,G)
+Contradictory states: if ON(G,F) there must be the predicate HEAVIER(F,G)
+-------------------------------------------
+69
+Predicates -> HOLDING(H,L),HOLDING(G,R),CLEAR(C),CLEAR(H),CLEAR(G),ON-TABLE(B),ON(C,B),ON-TABLE(D),ON(A,D),ON(F,A),CLEAR(F)
+Operators Used -> STACK-RIGHT(H,G),PICK-UP-RIGHT(H),STACK-RIGHT(G,C),LEAVE-LEFT(H)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(H,L) is only possible if there is the predicate LIGHT-BLOCK(H)
+Contradictory states: HOLDING(H,L) is only possible if there is the predicate LIGHT-BLOCK(H)
+-------------------------------------------
+70
+Predicates -> HOLDING(B,L),HOLDING(G,R),CLEAR(C),ON-TABLE(H),CLEAR(H),CLEAR(G),ON(C,B),ON-TABLE(D),ON(A,D),ON(F,A),CLEAR(F)
+Operators Used -> STACK-RIGHT(H,G),PICK-UP-RIGHT(H),STACK-RIGHT(G,C),LEAVE-LEFT(B)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(B,L) is only possible if there is the predicate LIGHT-BLOCK(B)
+Contradictory states: HOLDING(B,L) is only possible if there is the predicate LIGHT-BLOCK(B)
+-------------------------------------------
+71
+Predicates -> HOLDING(C,L),CLEAR(B),HOLDING(G,R),CLEAR(C),ON-TABLE(H),CLEAR(H),CLEAR(G),ON-TABLE(B),ON-TABLE(D),ON(A,D),ON(F,A),CLEAR(F)
+Operators Used -> STACK-RIGHT(H,G),PICK-UP-RIGHT(H),STACK-RIGHT(G,C),STACK-LEFT(C,B)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(C,L) is only possible if there is the predicate LIGHT-BLOCK(C)
+Contradictory states: HOLDING(C,L) is only possible if there is the predicate LIGHT-BLOCK(C)
+-------------------------------------------
+72
+Predicates -> HOLDING(D,L),HOLDING(G,R),CLEAR(C),ON-TABLE(H),CLEAR(H),CLEAR(G),ON-TABLE(B),ON(C,B),ON(A,D),ON(F,A),CLEAR(F)
+Operators Used -> STACK-RIGHT(H,G),PICK-UP-RIGHT(H),STACK-RIGHT(G,C),LEAVE-LEFT(D)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(D,L) is only possible if there is the predicate LIGHT-BLOCK(D)
+Contradictory states: HOLDING(D,L) is only possible if there is the predicate LIGHT-BLOCK(D)
+-------------------------------------------
+73
+Predicates -> HOLDING(A,L),CLEAR(D),HOLDING(G,R),CLEAR(C),ON-TABLE(H),CLEAR(H),CLEAR(G),ON-TABLE(B),ON(C,B),ON-TABLE(D),ON(F,A),CLEAR(F)
+Operators Used -> STACK-RIGHT(H,G),PICK-UP-RIGHT(H),STACK-RIGHT(G,C),STACK-LEFT(A,D)
+Reason for cancelling the exploration -> Contradictory states: if ON(F,A) there must be the predicate ON-TABLE(A) or ON(A,z)
+Contradictory states: if ON(F,A) there must be the predicate ON-TABLE(A) or ON(A,z)
+-------------------------------------------
+74
+Predicates -> HOLDING(B,R),HOLDING(F,L),CLEAR(A),ON-TABLE(H),CLEAR(H),CLEAR(G),ON(C,B),ON(G,C),ON-TABLE(D),ON(A,D),CLEAR(F)
+Operators Used -> STACK-RIGHT(H,G),PICK-UP-RIGHT(H),STACK-LEFT(F,A),LEAVE-RIGHT(B)
+Reason for cancelling the exploration -> Contradictory states: if ON(C,B) there must be the predicate ON-TABLE(B) or ON(B,z)
+Contradictory states: if ON(C,B) there must be the predicate ON-TABLE(B) or ON(B,z)
+-------------------------------------------
+75
+Predicates -> HOLDING(D,R),HOLDING(F,L),CLEAR(A),ON-TABLE(H),CLEAR(H),CLEAR(G),ON-TABLE(B),ON(C,B),ON(G,C),ON(A,D),CLEAR(F)
+Operators Used -> STACK-RIGHT(H,G),PICK-UP-RIGHT(H),STACK-LEFT(F,A),LEAVE-RIGHT(D)
+Reason for cancelling the exploration -> Contradictory states: if ON(A,D) there must be the predicate ON-TABLE(D) or ON(D,z)
+Contradictory states: if ON(A,D) there must be the predicate ON-TABLE(D) or ON(D,z)
+-------------------------------------------
+76
+Predicates -> HOLDING(C,R),CLEAR(B),HOLDING(F,L),CLEAR(A),ON-TABLE(H),CLEAR(H),CLEAR(G),ON-TABLE(B),ON(G,C),ON-TABLE(D),ON(A,D),CLEAR(F)
+Operators Used -> STACK-RIGHT(H,G),PICK-UP-RIGHT(H),STACK-LEFT(F,A),STACK-RIGHT(C,B)
+Reason for cancelling the exploration -> Contradictory states: if ON(G,C) there must be the predicate ON-TABLE(C) or ON(C,z)
+Contradictory states: if ON(G,C) there must be the predicate ON-TABLE(C) or ON(C,z)
+-------------------------------------------
+77
+Predicates -> ON(H,F),CLEAR(H),EMPTY-ARM(R),ON-TABLE(F),EMPTY-ARM(L),CLEAR(A),CLEAR(G),ON-TABLE(B),ON(C,B),ON(G,C),ON-TABLE(D),ON(A,D)
+Operators Used -> STACK-RIGHT(H,G),STACK-LEFT(F,A),PICK-UP-LEFT(F),UNSTACK-RIGHT(H,F)
+Reason for cancelling the exploration -> Contradictory states: if ON(H,F) there must be the predicate HEAVIER(F,H)
+Contradictory states: if ON(H,F) there must be the predicate HEAVIER(F,H)
+-------------------------------------------
+78
+Predicates -> HOLDING(B,L),ON-TABLE(F),CLEAR(F),CLEAR(A),HOLDING(H,R),CLEAR(G),ON(C,B),ON(G,C),CLEAR(H),ON-TABLE(D),ON(A,D)
+Operators Used -> STACK-RIGHT(H,G),STACK-LEFT(F,A),PICK-UP-LEFT(F),LEAVE-LEFT(B)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(B,L) is only possible if there is the predicate LIGHT-BLOCK(B)
+Contradictory states: HOLDING(B,L) is only possible if there is the predicate LIGHT-BLOCK(B)
+-------------------------------------------
+79
+Predicates -> HOLDING(D,L),ON-TABLE(F),CLEAR(F),CLEAR(A),HOLDING(H,R),CLEAR(G),ON-TABLE(B),ON(C,B),ON(G,C),CLEAR(H),ON(A,D)
+Operators Used -> STACK-RIGHT(H,G),STACK-LEFT(F,A),PICK-UP-LEFT(F),LEAVE-LEFT(D)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(D,L) is only possible if there is the predicate LIGHT-BLOCK(D)
+Contradictory states: HOLDING(D,L) is only possible if there is the predicate LIGHT-BLOCK(D)
+-------------------------------------------
+80
+Predicates -> HOLDING(C,L),CLEAR(B),ON-TABLE(F),CLEAR(F),CLEAR(A),HOLDING(H,R),CLEAR(G),ON-TABLE(B),ON(G,C),CLEAR(H),ON-TABLE(D),ON(A,D)
+Operators Used -> STACK-RIGHT(H,G),STACK-LEFT(F,A),PICK-UP-LEFT(F),STACK-LEFT(C,B)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(C,L) is only possible if there is the predicate LIGHT-BLOCK(C)
+Contradictory states: HOLDING(C,L) is only possible if there is the predicate LIGHT-BLOCK(C)
+-------------------------------------------
+81
+Predicates -> HOLDING(G,L),CLEAR(C),ON-TABLE(F),CLEAR(F),CLEAR(A),HOLDING(H,R),CLEAR(G),ON-TABLE(B),ON(C,B),CLEAR(H),ON-TABLE(D),ON(A,D)
+Operators Used -> STACK-RIGHT(H,G),STACK-LEFT(F,A),PICK-UP-LEFT(F),STACK-LEFT(G,C)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(G,L) is only possible if there is the predicate LIGHT-BLOCK(G)
+Contradictory states: HOLDING(G,L) is only possible if there is the predicate LIGHT-BLOCK(G)
+-------------------------------------------
+82
+Predicates -> ON(H,A),CLEAR(H),EMPTY-ARM(R),ON-TABLE(F),CLEAR(F),EMPTY-ARM(L),CLEAR(G),ON-TABLE(B),ON(C,B),ON(G,C),ON-TABLE(D),ON(A,D)
+Operators Used -> STACK-RIGHT(H,G),STACK-LEFT(F,A),PICK-UP-LEFT(F),UNSTACK-RIGHT(H,A)
+Reason for cancelling the exploration -> Contradictory states: if ON(H,A) there must be the predicate HEAVIER(A,H)
+Contradictory states: if ON(H,A) there must be the predicate HEAVIER(A,H)
+-------------------------------------------
+83
+Predicates -> ON(H,F),CLEAR(H),EMPTY-ARM(R),ON(F,G),EMPTY-ARM(L),CLEAR(A),ON-TABLE(B),ON(C,B),ON(G,C),ON-TABLE(D),ON(A,D)
+Operators Used -> STACK-RIGHT(H,G),STACK-LEFT(F,A),UNSTACK-LEFT(F,G),UNSTACK-RIGHT(H,F)
+Reason for cancelling the exploration -> Contradictory states: if ON(H,F) there must be the predicate HEAVIER(F,H)
+Contradictory states: if ON(H,F) there must be the predicate HEAVIER(F,H)
+-------------------------------------------
+84
+Predicates -> HOLDING(B,L),ON(F,G),CLEAR(F),CLEAR(A),HOLDING(H,R),ON(C,B),ON(G,C),CLEAR(H),ON-TABLE(D),ON(A,D)
+Operators Used -> STACK-RIGHT(H,G),STACK-LEFT(F,A),UNSTACK-LEFT(F,G),LEAVE-LEFT(B)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(B,L) is only possible if there is the predicate LIGHT-BLOCK(B)
+Contradictory states: HOLDING(B,L) is only possible if there is the predicate LIGHT-BLOCK(B)
+-------------------------------------------
+85
+Predicates -> HOLDING(D,L),ON(F,G),CLEAR(F),CLEAR(A),HOLDING(H,R),ON-TABLE(B),ON(C,B),ON(G,C),CLEAR(H),ON(A,D)
+Operators Used -> STACK-RIGHT(H,G),STACK-LEFT(F,A),UNSTACK-LEFT(F,G),LEAVE-LEFT(D)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(D,L) is only possible if there is the predicate LIGHT-BLOCK(D)
+Contradictory states: HOLDING(D,L) is only possible if there is the predicate LIGHT-BLOCK(D)
+-------------------------------------------
+86
+Predicates -> HOLDING(C,L),CLEAR(B),ON(F,G),CLEAR(F),CLEAR(A),HOLDING(H,R),ON-TABLE(B),ON(G,C),CLEAR(H),ON-TABLE(D),ON(A,D)
+Operators Used -> STACK-RIGHT(H,G),STACK-LEFT(F,A),UNSTACK-LEFT(F,G),STACK-LEFT(C,B)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(C,L) is only possible if there is the predicate LIGHT-BLOCK(C)
+Contradictory states: HOLDING(C,L) is only possible if there is the predicate LIGHT-BLOCK(C)
+-------------------------------------------
+87
+Predicates -> HOLDING(G,L),CLEAR(C),ON(F,G),CLEAR(F),CLEAR(A),HOLDING(H,R),ON-TABLE(B),ON(C,B),CLEAR(H),ON-TABLE(D),ON(A,D)
+Operators Used -> STACK-RIGHT(H,G),STACK-LEFT(F,A),UNSTACK-LEFT(F,G),STACK-LEFT(G,C)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(G,L) is only possible if there is the predicate LIGHT-BLOCK(G)
+Contradictory states: HOLDING(G,L) is only possible if there is the predicate LIGHT-BLOCK(G)
+-------------------------------------------
+88
+Predicates -> ON(H,A),CLEAR(H),EMPTY-ARM(R),ON(F,G),CLEAR(F),EMPTY-ARM(L),ON-TABLE(B),ON(C,B),ON(G,C),ON-TABLE(D),ON(A,D)
+Operators Used -> STACK-RIGHT(H,G),STACK-LEFT(F,A),UNSTACK-LEFT(F,G),UNSTACK-RIGHT(H,A)
+Reason for cancelling the exploration -> Contradictory states: if ON(H,A) there must be the predicate HEAVIER(A,H)
+Contradictory states: if ON(H,A) there must be the predicate HEAVIER(A,H)
+-------------------------------------------
+89
+Predicates -> HOLDING(B,L),HOLDING(A,R),CLEAR(D),ON-TABLE(F),CLEAR(F),CLEAR(A),ON(C,B),ON(G,C),ON(H,G),CLEAR(H),ON-TABLE(D)
+Operators Used -> STACK-RIGHT(F,A),PICK-UP-RIGHT(F),STACK-RIGHT(A,D),LEAVE-LEFT(B)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(B,L) is only possible if there is the predicate LIGHT-BLOCK(B)
+Contradictory states: HOLDING(B,L) is only possible if there is the predicate LIGHT-BLOCK(B)
+-------------------------------------------
+90
+Predicates -> HOLDING(C,L),CLEAR(B),HOLDING(A,R),CLEAR(D),ON-TABLE(F),CLEAR(F),CLEAR(A),ON-TABLE(B),ON(G,C),ON(H,G),CLEAR(H),ON-TABLE(D)
+Operators Used -> STACK-RIGHT(F,A),PICK-UP-RIGHT(F),STACK-RIGHT(A,D),STACK-LEFT(C,B)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(C,L) is only possible if there is the predicate LIGHT-BLOCK(C)
+Contradictory states: HOLDING(C,L) is only possible if there is the predicate LIGHT-BLOCK(C)
+-------------------------------------------
+91
+Predicates -> HOLDING(G,L),CLEAR(C),HOLDING(A,R),CLEAR(D),ON-TABLE(F),CLEAR(F),CLEAR(A),ON-TABLE(B),ON(C,B),ON(H,G),CLEAR(H),ON-TABLE(D)
+Operators Used -> STACK-RIGHT(F,A),PICK-UP-RIGHT(F),STACK-RIGHT(A,D),STACK-LEFT(G,C)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(G,L) is only possible if there is the predicate LIGHT-BLOCK(G)
+Contradictory states: HOLDING(G,L) is only possible if there is the predicate LIGHT-BLOCK(G)
+-------------------------------------------
+92
+Predicates -> HOLDING(H,L),CLEAR(G),HOLDING(A,R),CLEAR(D),ON-TABLE(F),CLEAR(F),CLEAR(A),ON-TABLE(B),ON(C,B),ON(G,C),CLEAR(H),ON-TABLE(D)
+Operators Used -> STACK-RIGHT(F,A),PICK-UP-RIGHT(F),STACK-RIGHT(A,D),STACK-LEFT(H,G)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(H,L) is only possible if there is the predicate LIGHT-BLOCK(H)
+Contradictory states: HOLDING(H,L) is only possible if there is the predicate LIGHT-BLOCK(H)
+-------------------------------------------
+93
+Predicates -> HOLDING(D,L),HOLDING(A,R),CLEAR(D),ON-TABLE(F),CLEAR(F),CLEAR(A),ON-TABLE(B),ON(C,B),ON(G,C),ON(H,G),CLEAR(H)
+Operators Used -> STACK-RIGHT(F,A),PICK-UP-RIGHT(F),STACK-RIGHT(A,D),LEAVE-LEFT(D)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(D,L) is only possible if there is the predicate LIGHT-BLOCK(D)
+Contradictory states: HOLDING(D,L) is only possible if there is the predicate LIGHT-BLOCK(D)
+-------------------------------------------
+94
+Predicates -> HOLDING(B,R),HOLDING(A,L),CLEAR(D),ON-TABLE(F),CLEAR(F),CLEAR(A),ON(C,B),ON(G,C),ON(H,G),CLEAR(H),ON-TABLE(D)
+Operators Used -> STACK-RIGHT(F,A),PICK-UP-RIGHT(F),STACK-LEFT(A,D),LEAVE-RIGHT(B)
+Reason for cancelling the exploration -> Contradictory states: if ON(C,B) there must be the predicate ON-TABLE(B) or ON(B,z)
+Contradictory states: if ON(C,B) there must be the predicate ON-TABLE(B) or ON(B,z)
+-------------------------------------------
+95
+Predicates -> HOLDING(C,R),CLEAR(B),HOLDING(A,L),CLEAR(D),ON-TABLE(F),CLEAR(F),CLEAR(A),ON-TABLE(B),ON(G,C),ON(H,G),CLEAR(H),ON-TABLE(D)
+Operators Used -> STACK-RIGHT(F,A),PICK-UP-RIGHT(F),STACK-LEFT(A,D),STACK-RIGHT(C,B)
+Reason for cancelling the exploration -> Contradictory states: if ON(G,C) there must be the predicate ON-TABLE(C) or ON(C,z)
+Contradictory states: if ON(G,C) there must be the predicate ON-TABLE(C) or ON(C,z)
+-------------------------------------------
+96
+Predicates -> HOLDING(G,R),CLEAR(C),HOLDING(A,L),CLEAR(D),ON-TABLE(F),CLEAR(F),CLEAR(A),ON-TABLE(B),ON(C,B),ON(H,G),CLEAR(H),ON-TABLE(D)
+Operators Used -> STACK-RIGHT(F,A),PICK-UP-RIGHT(F),STACK-LEFT(A,D),STACK-RIGHT(G,C)
+Reason for cancelling the exploration -> Contradictory states: if ON(H,G) there must be the predicate ON-TABLE(G) or ON(G,z)
+Contradictory states: if ON(H,G) there must be the predicate ON-TABLE(G) or ON(G,z)
+-------------------------------------------
+97
+Predicates -> HOLDING(B,L),HOLDING(A,R),CLEAR(D),ON(F,H),CLEAR(F),CLEAR(A),ON(C,B),ON(G,C),ON(H,G),ON-TABLE(D)
+Operators Used -> STACK-RIGHT(F,A),UNSTACK-RIGHT(F,H),STACK-RIGHT(A,D),LEAVE-LEFT(B)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(B,L) is only possible if there is the predicate LIGHT-BLOCK(B)
+Contradictory states: HOLDING(B,L) is only possible if there is the predicate LIGHT-BLOCK(B)
+-------------------------------------------
+98
+Predicates -> HOLDING(C,L),CLEAR(B),HOLDING(A,R),CLEAR(D),ON(F,H),CLEAR(F),CLEAR(A),ON-TABLE(B),ON(G,C),ON(H,G),ON-TABLE(D)
+Operators Used -> STACK-RIGHT(F,A),UNSTACK-RIGHT(F,H),STACK-RIGHT(A,D),STACK-LEFT(C,B)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(C,L) is only possible if there is the predicate LIGHT-BLOCK(C)
+Contradictory states: HOLDING(C,L) is only possible if there is the predicate LIGHT-BLOCK(C)
+-------------------------------------------
+99
+Predicates -> HOLDING(G,L),CLEAR(C),HOLDING(A,R),CLEAR(D),ON(F,H),CLEAR(F),CLEAR(A),ON-TABLE(B),ON(C,B),ON(H,G),ON-TABLE(D)
+Operators Used -> STACK-RIGHT(F,A),UNSTACK-RIGHT(F,H),STACK-RIGHT(A,D),STACK-LEFT(G,C)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(G,L) is only possible if there is the predicate LIGHT-BLOCK(G)
+Contradictory states: HOLDING(G,L) is only possible if there is the predicate LIGHT-BLOCK(G)
+-------------------------------------------
+100
+Predicates -> HOLDING(H,L),CLEAR(G),HOLDING(A,R),CLEAR(D),ON(F,H),CLEAR(F),CLEAR(A),ON-TABLE(B),ON(C,B),ON(G,C),ON-TABLE(D)
+Operators Used -> STACK-RIGHT(F,A),UNSTACK-RIGHT(F,H),STACK-RIGHT(A,D),STACK-LEFT(H,G)
+Reason for cancelling the exploration -> Contradictory states: HOLDING(H,L) is only possible if there is the predicate LIGHT-BLOCK(H)
+Contradictory states: HOLDING(H,L) is only possible if there is the predicate LIGHT-BLOCK(H)
+-------------------------------------------

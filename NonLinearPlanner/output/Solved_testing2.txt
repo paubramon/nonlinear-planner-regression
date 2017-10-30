@@ -1,10 +1,6 @@
-Solved!!
-
 Number of operators of the plan: 10
 Number of states generated to solve the problem: 267
-Total number of correct and incorrect states generated to solve the problem: 2216
 Plan: STACK-RIGHT(A,B),STACK-LEFT(F,C),PICK-UP-LEFT(F),UNSTACK-RIGHT(A,F),STACK-RIGHT(B,E),PICK-UP-RIGHT(B),LEAVE-RIGHT(C),UNSTACK-RIGHT(C,E),LEAVE-RIGHT(B),UNSTACK-RIGHT(B,C)
-
 
 
 First 100 cancelled StatesDetails of the states that were cancelled:

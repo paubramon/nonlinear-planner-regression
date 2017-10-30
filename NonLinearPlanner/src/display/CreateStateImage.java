@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+
+import elements.Block;
 import elements.PredicateHelper;
 import elements.State;
 import elements.PredicateHelper.PredicateType;
@@ -28,13 +30,15 @@ public class CreateStateImage {
 	private int[] firstRowHeight;
 	private boolean predefinedFirstRow = false;
 	private Graphics2D im;
+	private ArrayList<Block> blocks;
 
-	public CreateStateImage(State state, String figTitle, String[] firstRow, int[] firstRowHeight) {
+	public CreateStateImage(State state, String figTitle, String[] firstRow, int[] firstRowHeight, ArrayList<Block> blocks) {
 		this.state = state;
 		this.figTitle = figTitle;
 		this.firstRow = firstRow;
 		this.firstRowHeight = firstRowHeight;
 		predefinedFirstRow = true;	
+		this.blocks = blocks;
 	}
 
 	public Graphics2D createGrafic(String filePath) {
@@ -194,6 +198,18 @@ public class CreateStateImage {
 		im.setColor(Color.BLACK);
 		im.drawRect(centerBlock - block_size / 2, ground_value - BLOCK_HEIGHT, block_size, BLOCK_HEIGHT);
 		im.setFont(new Font("default", Font.BOLD, 20));
-		im.drawString(blockname, centerBlock - 5, ground_value + 6 - BLOCK_HEIGHT / 2);
+		int extraShift = 0;
+		if(State.maxColumns>4) {extraShift = 10;}
+		im.drawString(findBlockText(blockname), centerBlock - 5 - extraShift, ground_value + 6 - BLOCK_HEIGHT / 2);
+	}
+	
+	private String findBlockText(String blockname) {
+		String blockText = blockname + " ";
+		for(Block b: blocks) {
+			if (b.name.equals(blockname)) {
+				blockText = blockText + String.format("%0" + b.weight + "d", 0).replace("0","*");
+			}
+		}
+		return blockText;
 	}
 }
