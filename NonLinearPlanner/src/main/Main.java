@@ -23,7 +23,7 @@ public class Main {
 	// Options of the planner
 	public static final String INPUT_FILE = "testing1";
 	public static final boolean FIND_GRAPHS = false; // true -> tries to solve the system with different number of
-													// columns and plots graphs of the results
+													 // columns and plots graphs of the results
 	public static final int TYPE_OF_GRAPH = 2; // 0-> Algorithm iterations, 1-> Operations, 2-> Time, 3-> Visited States
 	public static final boolean PRINT_ALL = true; // true -> prints and draws all the results of the planner.
 
