@@ -3,14 +3,12 @@ package planner;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
-
 import display.MultipleStateDisplay;
 import display.SimpleGraph;
 import elements.Block;
 import elements.GenericOperator;
 import elements.Operator;
+import elements.PredicateHelper;
 import elements.State;
 
 public class NonLinearPlannerRegression {
@@ -18,7 +16,7 @@ public class NonLinearPlannerRegression {
 	public static final int NUM_CANCELLED_STATES = 100;
 	public static final String TEXT_SEPARATOR = "-------------------------------------------\n";
 	public static final int MAX_NUMBER_OF_OPERATORS = 100000;
-	public static final boolean EXTRA_CONSTRAIN = false;
+	public static final boolean SIMILARITY_CONSTRAIN = true;
 	public static final boolean SAVE_GRAPH = true;
 
 	private ArrayList<GenericOperator> operators = new ArrayList<GenericOperator>();
@@ -33,6 +31,9 @@ public class NonLinearPlannerRegression {
 	private String textCorrectPlan = "";
 	private int totalOperations = 0;
 	private int algorithmIterations = 0;
+	private int similarityGoal = 0;
+	private int similarityNew = 0;
+	ArrayList<String> common;
 	private long startTime = 0;
 	private long stopTime = 0;
 
@@ -67,6 +68,7 @@ public class NonLinearPlannerRegression {
 		totalNumStates = 1; // Number of visited states (repeated or not)
 		stateQueue = new ArrayList<State>();
 		visitedStates = new ArrayList<State>();
+		similarityGoal = similarityFunction(initialState.getPredicates(), finalState.getPredicates());
 
 		// Run the algorithm
 		stateQueue.add(finalState);
@@ -129,14 +131,10 @@ public class NonLinearPlannerRegression {
 	private ArrayList<State> findChilds(State goalState) {
 		ArrayList<State> childs = new ArrayList<State>();
 		ArrayList<String> finalConditions = goalState.getPredicates();
-		ArrayList<String> initialConditions = initialState.getPredicates();
 		ArrayList<Operator> possibleOperators = new ArrayList<Operator>();
 		ArrayList<Operator> validOperators = new ArrayList<Operator>();
 
-		ArrayList<String> common = new ArrayList<String>(finalState.getPredicates());
-		common.retainAll(initialConditions);
-		int similarityGoal = common.size();
-		int similarityNew = 0;
+		similarityNew = 0;
 
 		// This loop searches all the possible operators that could add one of the
 		// conditions in the final state.
@@ -180,32 +178,50 @@ public class NonLinearPlannerRegression {
 			if (stateValid) {
 				// Check if the state has any contradictory predicates
 				if (possibleState.isStateValid()) {
-					common = new ArrayList<String>(possibleState.getPredicates());
-					common.retainAll(initialConditions);
-					similarityNew = common.size();
-					if (!EXTRA_CONSTRAIN) {
-						childs.add(possibleState);
-						validOperators.add(pOperator);
-					} else if (EXTRA_CONSTRAIN && (similarityNew >= (similarityGoal - 2))) {
+					similarityNew = similarityFunction(initialState.getPredicates(), possibleState.getPredicates());
+					if (SIMILARITY_CONSTRAIN) {
+						if (similarityNew >= (similarityGoal - 2)) {
+							if (similarityNew > similarityGoal) {
+								similarityGoal = similarityNew;
+							}
+							childs.add(possibleState);
+							validOperators.add(pOperator);
+						} else {
+							addCancelExplanation(possibleState,
+									"This state was cancelled because it wasn't goal oriented.");
+						}
+					} else {
 						childs.add(possibleState);
 						validOperators.add(pOperator);
 					}
-				} else if (storedCancelledStates < NUM_CANCELLED_STATES) {
-					storedCancelledStates += 1;
-					textCancelledStates = textCancelledStates + Integer.toString(storedCancelledStates) + "\n";
-					textCancelledStates = textCancelledStates + "Predicates -> "
-							+ String.join(",", possibleState.getPredicates()) + "\n";
-					textCancelledStates = textCancelledStates + "Operators Used -> "
-							+ String.join(",", possibleState.getUsedOperators()) + "\n";
-					textCancelledStates = textCancelledStates + "Reason for cancelling the exploration -> "
-							+ possibleState.stateExplanation + "\n";
-					textCancelledStates = textCancelledStates + possibleState.stateExplanation + "\n";
-					textCancelledStates = textCancelledStates + TEXT_SEPARATOR;
+				} else {
+					addCancelExplanation(possibleState, possibleState.stateExplanation);
 				}
 			}
 		}
 
 		return childs;
+	}
+
+	/**
+	 * This method adds explanation for cancelling state to the textCancelledStates
+	 * variable.
+	 * 
+	 * @param possibleState
+	 * @param explanation
+	 */
+	private void addCancelExplanation(State possibleState, String explanation) {
+		if (storedCancelledStates < NUM_CANCELLED_STATES) {
+			storedCancelledStates += 1;
+			textCancelledStates = textCancelledStates + Integer.toString(storedCancelledStates) + "\n";
+			textCancelledStates = textCancelledStates + "Predicates -> "
+					+ String.join(",", possibleState.getPredicates()) + "\n";
+			textCancelledStates = textCancelledStates + "Operators Used -> "
+					+ String.join(",", possibleState.getUsedOperators()) + "\n";
+			textCancelledStates = textCancelledStates + "Reason for cancelling the exploration -> " + explanation
+					+ "\n";
+			textCancelledStates = textCancelledStates + TEXT_SEPARATOR;
+		}
 	}
 
 	/**
@@ -231,6 +247,47 @@ public class NonLinearPlannerRegression {
 	}
 
 	/**
+	 * Given two arrays of predicates, this method returns a value of similarity.
+	 * This value of similarity gives more importance to ON_TABLE predicates and
+	 * ignores others not so important
+	 * 
+	 * @param initial
+	 * @param possible
+	 * @return
+	 */
+	private int similarityFunction(ArrayList<String> initial, ArrayList<String> possible) {
+		int similarity = 0;
+		String blockname1;
+		String blockname2;
+		for (String predicate : possible) {
+			switch (PredicateHelper.findType(predicate)) {
+			case ON_TABLE:
+				if (initial.contains(predicate)) {
+					similarity = similarity + 1;
+				}
+				break;
+			case ON:
+				blockname1 = predicate.substring(3, 4);
+				blockname2 = predicate.substring(5, 6);
+				if (initial.contains(predicate) && initial.contains("ON-TABLE(" + blockname2 + ")")
+						&& possible.contains("ON-TABLE(" + blockname2 + ")")) {
+					// Checks if we have already two blocks correctly stack
+					similarity = similarity + 1;
+				}
+				break;
+			case HOLDING:
+				blockname1 = predicate.substring(8, 9);
+				if (initial.contains("CLEAR(" + blockname1 + ")")) {
+					similarity = similarity + 1;
+				}
+			default:
+				break;
+			}
+		}
+		return similarity;
+	}
+
+	/**
 	 * It runs the runPlanner method for the parameters of the input file changing
 	 * the value of the maxColumns number. Then it plots the statistics.
 	 */
@@ -243,7 +300,7 @@ public class NonLinearPlannerRegression {
 		String xLabel = "Max number of columns";
 		String yLabel = "";
 		String prefixFile = "";
-		
+
 		for (int i = 0; i <= number_of_blocks; i++) {
 			if (i < finalState.getUsedSpace()) {
 				// for a final state using more space than the available, the plan is impossible
@@ -306,7 +363,7 @@ public class NonLinearPlannerRegression {
 		System.out.println("y axis: " + Arrays.toString(y));
 		SimpleGraph chart2 = new SimpleGraph(titlegraph, xLabel, yLabel, x, y);
 		chart2.displayPlot();
-		if(SAVE_GRAPH) {
+		if (SAVE_GRAPH) {
 			try {
 				chart2.saveJPEG(prefixFile + "_" + filename);
 			} catch (IOException e) {
