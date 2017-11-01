@@ -17,7 +17,7 @@ public class NonLinearPlannerRegression {
 	public static final String TEXT_SEPARATOR = "-------------------------------------------\n";
 	public static final int MAX_NUMBER_OF_OPERATORS = 100000;
 	public static final boolean SIMILARITY_CONSTRAIN = true;
-	public static final boolean SAVE_GRAPH = true;
+	public static final boolean SAVE_GRAPH = false;
 
 	private ArrayList<GenericOperator> operators = new ArrayList<GenericOperator>();
 	private State finalState;
